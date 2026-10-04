@@ -844,6 +844,175 @@ def venn():
     save(fig, "venn")
 
 
+# ---------------------------------------------------------------------------
+# Иллюстрации для модулей 18–23
+# ---------------------------------------------------------------------------
+
+# 37. Временной ряд: декомпозиция и автокорреляция
+def time_series():
+    rng = np.random.default_rng(0)
+    n = 24 * 7 * 6
+    t = np.arange(n)
+    trend = 0.02 * t
+    season = 3 * np.sin(2 * np.pi * t / 24) + 1.5 * np.sin(2 * np.pi * t / (24 * 7))
+    noise = np.zeros(n)
+    for i in range(1, n):
+        noise[i] = 0.7 * noise[i - 1] + rng.normal(0, 0.8)      # AR(1)-шум
+    y = 10 + trend + season + noise
+    fig = plt.figure(figsize=(15, 6))
+    gs = fig.add_gridspec(4, 2, width_ratios=[2.2, 1])
+    ax0 = None
+    for k, (comp, lab, c) in enumerate([(y, "ряд", "k"), (10 + trend, "тренд", C[0]),
+                                        (season, "сезонность", C[2]), (noise, "остаток", C[1])]):
+        ax = fig.add_subplot(gs[k, 0], sharex=ax0); ax0 = ax0 or ax
+        ax.plot(t[:24 * 21], comp[:24 * 21], color=c, lw=1); ax.set_ylabel(lab)
+        if k < 3: ax.tick_params(labelbottom=False)
+    ax.set_xlabel("часы (первые 3 недели)")
+    ax = fig.add_subplot(gs[:, 1])
+    yd = y - np.polyval(np.polyfit(t, y, 1), t)              # убираем линейный тренд
+    yc = yd - yd.mean(); lags = np.arange(0, 24 * 8)
+    acf = np.array([np.sum(yc[:n - l] * yc[l:]) / np.sum(yc**2) for l in lags])
+    ax.bar(lags, acf, width=1, color=C[0])
+    ax.axhline(1.96 / np.sqrt(n), color=C[1], ls="--", lw=1); ax.axhline(-1.96 / np.sqrt(n), color=C[1], ls="--", lw=1)
+    for d in range(1, 8): ax.axvline(24 * d, color="gray", lw=0.5, ls=":")
+    ax.set_xlabel("лаг, часы"); ax.set_title("ACF после удаления тренда:\nпики каждые 24 часа — суточная сезонность")
+    fig.suptitle("Временной ряд почасовой нагрузки (синтетика)", y=1.01)
+    save(fig, "time_series")
+
+
+# 38. Кросс-валидация во времени
+def ts_cv():
+    fig, axes = plt.subplots(1, 2, figsize=(14, 3.4))
+    for ax, kind in zip(axes, ["random", "time"]):
+        rng = np.random.default_rng(1)
+        for fold in range(5):
+            if kind == "random":
+                idx = rng.permutation(20); test = set(idx[fold * 4:(fold + 1) * 4]); train = set(range(20)) - test
+            else:
+                end = 8 + fold * 2; train = set(range(end)); test = set(range(end, end + 2))
+            for i in range(20):
+                col = C[0] if i in train else C[1] if i in test else "#e5e7eb"
+                ax.add_patch(plt.Rectangle((i, 4 - fold), 0.9, 0.8, color=col))
+        ax.set_xlim(0, 20); ax.set_ylim(-0.2, 5); ax.set_yticks([0.4 + k for k in range(5)], [f"fold {5 - k}" for k in range(5)])
+        ax.set_xlabel("время →"); ax.grid(False)
+        ax.set_title("✗ Случайный K-fold: модель «видит будущее»" if kind == "random" else "✓ Expanding window: train строго до test")
+    axes[1].legend(handles=[plt.Rectangle((0, 0), 1, 1, color=C[0]), plt.Rectangle((0, 0), 1, 1, color=C[1])],
+                   labels=["train", "test"], loc="lower right")
+    save(fig, "ts_cv")
+
+
+# 39. Парадокс Симпсона
+def simpson():
+    rng = np.random.default_rng(2)
+    fig, axes = plt.subplots(1, 2, figsize=(13, 4.3))
+    xs, ys = [], []
+    for g, (mx, my), c in zip(range(3), [(2, 8), (5, 5), (8, 2)], C):
+        x = rng.normal(mx, 0.8, 60); y = my + 0.8 * (x - mx) + rng.normal(0, 0.5, 60)
+        axes[1].scatter(x, y, s=12, color=c, label=f"группа {g + 1}: наклон +0.8")
+        xs.append(x); ys.append(y)
+    X = np.concatenate(xs); Y = np.concatenate(ys)
+    k, b = np.polyfit(X, Y, 1)
+    axes[0].scatter(X, Y, s=12, color="gray")
+    xx = np.linspace(0, 10, 10)
+    axes[0].plot(xx, k * xx + b, color="k", lw=2, label=f"общий наклон {k:+.2f}")
+    axes[0].legend(); axes[0].set_title("Без учёта групп: «чем больше x, тем меньше y»")
+    for x, y, c in zip(xs, ys, C):
+        kk, bb = np.polyfit(x, y, 1); axes[1].plot(xx, kk * xx + bb, color=c, lw=1.5)
+    axes[1].set_ylim(-2, 12); axes[1].legend(fontsize=8)
+    axes[1].set_title("Внутри каждой группы связь положительная: x ↑ ⇒ y ↑")
+    fig.suptitle("Парадокс Симпсона: конфаундер (группа) переворачивает вывод", y=1.02)
+    save(fig, "simpson")
+
+
+# 40. BM25: насыщение частоты термина и IDF
+def bm25():
+    fig, axes = plt.subplots(1, 2, figsize=(12, 3.8))
+    tf = np.arange(0, 21)
+    axes[0].plot(tf, tf, "--", color="gray", label="сырая частота TF")
+    for k1, c in zip([0.5, 1.2, 2.0], C):
+        axes[0].plot(tf, tf * (k1 + 1) / (tf + k1), color=c, lw=2, label=f"BM25, k₁ = {k1}")
+    axes[0].set_ylim(0, 8); axes[0].set_xlabel("сколько раз слово встретилось в документе")
+    axes[0].legend(fontsize=9); axes[0].set_title("Насыщение: 20-е повторение почти ничего не добавляет")
+    N = 1_000_000; df = np.logspace(0, 6, 200)
+    axes[1].semilogx(df, np.log((N - df + 0.5) / (df + 0.5) + 1), color=C[1], lw=2.5)
+    for w, d in [("«трансформер»", 300), ("«модель»", 40_000), ("«и»", 900_000)]:
+        v = np.log((N - d + 0.5) / (d + 0.5) + 1); axes[1].plot(d, v, "o", color="k"); axes[1].text(d * 1.3, v + 0.3, w)
+    axes[1].set_xlabel("в скольких документах из 10⁶ встречается слово (df)"); axes[1].set_ylabel("IDF")
+    axes[1].set_title("IDF: редкие слова весят больше")
+    save(fig, "bm25")
+
+
+# 41. Матричная факторизация для рекомендаций
+def matrix_factorization():
+    rng = np.random.default_rng(5)
+    nu, ni, k = 30, 40, 2
+    U = rng.normal(size=(nu, k)); V = rng.normal(size=(ni, k))
+    R = U @ V.T + 0.3 * rng.normal(size=(nu, ni))
+    mask = rng.random((nu, ni)) < 0.3
+    Robs = np.where(mask, R, np.nan)
+    # ALS
+    r0 = np.random.default_rng(0)
+    Uh = r0.normal(0, 0.1, (nu, k)); Vh = r0.normal(0, 0.1, (ni, k)); lam = 0.1
+    for _ in range(100):
+        for u in range(nu):
+            m = mask[u]; A = Vh[m]; Uh[u] = np.linalg.solve(A.T @ A + lam * np.eye(k), A.T @ R[u, m])
+        for i in range(ni):
+            m = mask[:, i]; A = Uh[m]; Vh[i] = np.linalg.solve(A.T @ A + lam * np.eye(k), A.T @ R[m, i])
+    P = Uh @ Vh.T
+    rmse = np.sqrt(np.mean((P[~mask] - R[~mask]) ** 2))
+    fig, axes = plt.subplots(1, 3, figsize=(15, 4))
+    vmin, vmax = -3, 3
+    axes[0].imshow(Robs, cmap="RdBu_r", vmin=vmin, vmax=vmax); axes[0].set_title(f"Наблюдаемые оценки: {mask.mean():.0%} заполнено")
+    axes[1].imshow(P, cmap="RdBu_r", vmin=vmin, vmax=vmax); axes[1].set_title(f"R̂ = U·Vᵀ (ранг {k}, ALS)\nRMSE на скрытых = {rmse:.2f} (шум 0.30)")
+    axes[2].imshow(R, cmap="RdBu_r", vmin=vmin, vmax=vmax); axes[2].set_title("Истинные оценки (неизвестны)")
+    for ax in axes:
+        ax.set_xlabel("товары"); ax.set_ylabel("пользователи"); ax.set_xticks([]); ax.set_yticks([]); ax.grid(False)
+    save(fig, "matrix_factorization")
+
+
+# 42. Байесовское обновление и conformal prediction
+def bayes_conformal():
+    fig, axes = plt.subplots(1, 2, figsize=(13, 4))
+    p = np.linspace(0, 1, 400)
+    for (a, b, lab), c in zip([(1, 1, "априор Beta(1,1)"), (3, 9, "после 2 из 10"), (21, 81, "после 20 из 100"),
+                               (201, 801, "после 200 из 1000")], C):
+        axes[0].plot(p, stats.beta.pdf(p, a, b), color=c, lw=2, label=lab)
+    axes[0].set_xlim(0, 0.5); axes[0].legend(fontsize=9)
+    axes[0].set_title("Апостериор конверсии сужается с ростом данных")
+    rng = np.random.default_rng(3)
+    x = np.sort(rng.uniform(0, 10, 300)); y = np.sin(x) + rng.normal(0, 0.15 + 0.05 * x, 300)
+    tr, cal = np.arange(0, 300, 2), np.arange(1, 300, 2)
+    coef = np.polyfit(x[tr], y[tr], 5)
+    resid = np.abs(y[cal] - np.polyval(coef, x[cal]))
+    q = np.quantile(resid, np.ceil((len(cal) + 1) * 0.9) / len(cal))
+    xs = np.linspace(0, 10, 300); f = np.polyval(coef, xs)
+    axes[1].scatter(x, y, s=6, color="gray", alpha=0.6)
+    axes[1].plot(xs, f, color=C[0], lw=2, label="модель")
+    axes[1].fill_between(xs, f - q, f + q, color=C[0], alpha=0.2, label=f"90% conformal-интервал (±{q:.2f})")
+    xt = rng.uniform(0, 10, 5000); yt = np.sin(xt) + rng.normal(0, 0.15 + 0.05 * xt, 5000)
+    cover = np.mean(np.abs(yt - np.polyval(coef, xt)) <= q)
+    axes[1].legend(fontsize=9); axes[1].set_title(f"Conformal prediction: покрытие на новых данных = {cover:.1%}")
+    save(fig, "bayes_conformal")
+
+
+# 43. Фурье: разложение сигнала и спектр
+def fourier():
+    fs = 1000; t = np.arange(0, 1, 1 / fs)
+    rng = np.random.default_rng(0)
+    sig = 1.0 * np.sin(2 * np.pi * 50 * t) + 0.5 * np.sin(2 * np.pi * 120 * t) + 0.3 * rng.normal(size=t.size)
+    F = np.fft.rfft(sig); freqs = np.fft.rfftfreq(t.size, 1 / fs)
+    fig, axes = plt.subplots(1, 3, figsize=(16, 3.8))
+    axes[0].plot(t[:200], sig[:200], color="k", lw=1); axes[0].set_title("Сигнал во времени: 50 Гц + 120 Гц + шум")
+    axes[0].set_xlabel("время, с")
+    axes[1].plot(freqs, 2 * np.abs(F) / t.size, color=C[0], lw=1.5)
+    axes[1].set_xlim(0, 250); axes[1].set_xlabel("частота, Гц"); axes[1].set_title("Спектр |FFT|: два чётких пика")
+    Ff = F.copy(); Ff[np.abs(freqs - 50) > 3] = 0
+    axes[2].plot(t[:200], np.fft.irfft(Ff)[:200], color=C[2], lw=2, label="только 50 Гц (фильтр в спектре)")
+    axes[2].plot(t[:200], np.sin(2 * np.pi * 50 * t[:200]), "k--", lw=1, label="истинная компонента")
+    axes[2].legend(fontsize=8, loc="lower right"); axes[2].set_title("Обратное FFT: шум и 120 Гц убраны")
+    save(fig, "fourier")
+
+
 if __name__ == "__main__":
     for fn in [dot_product, matrix_transform, eigen, pca, gd_contours, optimizers, activations,
                distributions, mvn, clt, entropy_kl, bias_variance, roc_pr, softmax_temp,
@@ -851,5 +1020,6 @@ if __name__ == "__main__":
                functions_gallery, derivative_tangent, taylor, convexity_saddle, kl_fit, calibration,
                kernel_trick, gaussian_process, value_iteration, spectral_clustering, double_descent,
                wasserstein, unit_circle, integral_area, equations, sequences_limits,
-               descriptive_stats, venn]:
+               descriptive_stats, venn, time_series, ts_cv, simpson, bm25, matrix_factorization,
+               bayes_conformal, fourier]:
         fn()
