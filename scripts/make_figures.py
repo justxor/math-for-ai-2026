@@ -716,11 +716,140 @@ def wasserstein():
     save(fig, "wasserstein")
 
 
+# ---------------------------------------------------------------------------
+# Иллюстрации для BASICS.md
+# ---------------------------------------------------------------------------
+
+# 31. Единичная окружность и синус/косинус
+def unit_circle():
+    fig, axes = plt.subplots(1, 2, figsize=(13, 4.8), gridspec_kw={"width_ratios": [1, 1.6]})
+    ax = axes[0]
+    t = np.linspace(0, 2 * np.pi, 300)
+    ax.plot(np.cos(t), np.sin(t), color="gray", lw=1.5)
+    a = np.pi / 3
+    ax.plot([0, np.cos(a)], [0, np.sin(a)], color="k", lw=2)
+    ax.plot([np.cos(a), np.cos(a)], [0, np.sin(a)], color=C[1], lw=3, label=f"sin θ = {np.sin(a):.3f}")
+    ax.plot([0, np.cos(a)], [0, 0], color=C[0], lw=3, label=f"cos θ = {np.cos(a):.3f}")
+    ax.add_patch(plt.matplotlib.patches.Arc((0, 0), 0.5, 0.5, theta1=0, theta2=60, color=C[2], lw=2))
+    ax.text(0.3, 0.1, "θ = 60° = π/3", color=C[2])
+    ax.plot(np.cos(a), np.sin(a), "o", color="k")
+    for ang, lab in [(0, "0"), (np.pi / 2, "π/2"), (np.pi, "π"), (3 * np.pi / 2, "3π/2")]:
+        ax.text(1.18 * np.cos(ang), 1.18 * np.sin(ang), lab, ha="center", va="center")
+    ax.set_aspect("equal"); ax.set_xlim(-1.4, 1.4); ax.set_ylim(-1.4, 1.4); ax.legend(loc="lower left", fontsize=9)
+    ax.set_title("Точка на окружности радиуса 1: (cos θ, sin θ)")
+    ax = axes[1]
+    x = np.linspace(0, 4 * np.pi, 500)
+    ax.plot(x, np.sin(x), color=C[1], lw=2, label="sin x")
+    ax.plot(x, np.cos(x), color=C[0], lw=2, label="cos x")
+    ax.set_xticks([0, np.pi, 2 * np.pi, 3 * np.pi, 4 * np.pi], ["0", "π", "2π", "3π", "4π"])
+    ax.axhline(0, color="k", lw=0.6); ax.legend()
+    ax.set_title("Период 2π: значения повторяются — так кодируют позицию токена")
+    save(fig, "unit_circle")
+
+
+# 32. Интеграл как площадь
+def integral_area():
+    fig, axes = plt.subplots(1, 3, figsize=(15, 4))
+    f = lambda x: 0.5 * x**2 + 1
+    x = np.linspace(0, 3, 300)
+    for ax, n in zip(axes[:2], [6, 30]):
+        ax.plot(x, f(x), color=C[0], lw=2.5)
+        edges = np.linspace(0, 3, n + 1); w = edges[1] - edges[0]; mids = edges[:-1] + w / 2
+        ax.bar(mids, f(mids), width=w, color=C[0], alpha=0.25, edgecolor=C[0])
+        approx = (f(mids) * w).sum()
+        ax.set_title(f"{n} прямоугольников: площадь ≈ {approx:.4f}\n(точно ∫₀³ = 7.5)")
+    ax = axes[2]
+    z = np.linspace(-4, 4, 400); pdf = stats.norm.pdf(z)
+    ax.plot(z, pdf, color=C[1], lw=2.5)
+    m = (z > -1) & (z < 1)
+    ax.fill_between(z[m], pdf[m], color=C[1], alpha=0.3)
+    ax.text(-0.75, 0.15, "P(−1 < X < 1)\n= 0.683", fontsize=10)
+    ax.set_title("Вероятность = площадь под плотностью")
+    save(fig, "integral_area")
+
+
+# 33. Квадратное уравнение и системы уравнений
+def equations():
+    fig, axes = plt.subplots(1, 3, figsize=(15, 4))
+    x = np.linspace(-3, 5, 300)
+    for (a, b, c), col in zip([(1, -2, -3), (1, -2, 1), (1, -2, 3)], C):
+        D = b**2 - 4 * a * c
+        lab = f"x² {b:+}x {c:+}: D = {D}" + (" → 2 корня" if D > 0 else " → 1 корень" if D == 0 else " → нет корней")
+        axes[0].plot(x, a * x**2 + b * x + c, color=col, lw=2, label=lab)
+    axes[0].axhline(0, color="k", lw=0.8); axes[0].set_ylim(-5, 10); axes[0].legend(fontsize=8)
+    axes[0].set_title("Корни = пересечения с осью x")
+    x = np.linspace(-1, 5, 100)
+    axes[1].plot(x, 4 - x, color=C[0], lw=2, label="x + y = 4")
+    axes[1].plot(x, (x - 1) / 1, color=C[1], lw=2, label="x − y = 1")
+    axes[1].plot(2.5, 1.5, "ko", ms=8); axes[1].text(2.65, 1.65, "(2.5; 1.5)")
+    axes[1].legend(); axes[1].set_title("Система 2×2: одно решение — точка пересечения")
+    axes[2].plot(x, 4 - x, color=C[0], lw=6, alpha=0.35, label="x + y = 4")
+    axes[2].plot(x, 2 - x, color=C[1], lw=2, label="x + y = 2")
+    axes[2].plot(x, 4 - x, color=C[2], lw=1, ls="--", label="2x + 2y = 8 (та же прямая)")
+    axes[2].legend(fontsize=8); axes[2].set_title("Параллельные — нет решений;\nсовпадающие — бесконечно много (det = 0)")
+    save(fig, "equations")
+
+
+# 34. Прогрессии и пределы
+def sequences_limits():
+    n = np.arange(1, 31)
+    fig, axes = plt.subplots(1, 3, figsize=(15, 3.8))
+    axes[0].plot(n, 2 + 3 * (n - 1), "o-", color=C[0], ms=3, label="арифметическая: +3")
+    axes[0].plot(n, 2 * 1.2 ** (n - 1), "o-", color=C[1], ms=3, label="геометрическая: ×1.2")
+    axes[0].legend(); axes[0].set_title("Рост: линейный vs экспоненциальный")
+    s = np.cumsum(0.5 ** (n - 1))
+    axes[1].plot(n, s, "o-", color=C[2], ms=3); axes[1].axhline(2, color="k", ls="--", lw=1)
+    axes[1].text(15, 1.85, "предел = 1/(1 − 0.5) = 2"); axes[1].set_title("1 + ½ + ¼ + … сходится к 2")
+    nn = np.arange(1, 200)
+    axes[2].plot(nn, (1 + 1 / nn) ** nn, color=C[3], lw=2); axes[2].axhline(np.e, color="k", ls="--", lw=1)
+    axes[2].text(80, 2.55, "e ≈ 2.71828"); axes[2].set_title("(1 + 1/n)ⁿ → e: сложные проценты")
+    save(fig, "sequences_limits")
+
+
+# 35. Описательная статистика
+def descriptive_stats():
+    rng = np.random.default_rng(3)
+    x = rng.lognormal(3.3, 0.5, 2000)
+    fig, axes = plt.subplots(1, 3, figsize=(15, 3.8))
+    ax = axes[0]
+    ax.hist(x, bins=60, color=C[0], alpha=0.6)
+    for v, lab, c in [(np.mean(x), "среднее", C[1]), (np.median(x), "медиана", C[2]), (np.percentile(x, 95), "p95", C[3])]:
+        ax.axvline(v, color=c, lw=2, label=f"{lab} = {v:.1f}")
+    ax.legend(fontsize=9); ax.set_title("Скошенное распределение (время ответа, мс)")
+    ax = axes[1]
+    ax.boxplot([rng.normal(0, 1, 300), rng.normal(0, 2, 300), np.r_[rng.normal(0, 1, 290), rng.normal(7, 1, 10)]])
+    ax.set_xticks([1, 2, 3], ["σ = 1", "σ = 2", "с выбросами"]); ax.set_title("Ящик с усами: медиана, квартили, выбросы")
+    ax = axes[2]
+    for k, (rho, c) in enumerate(zip([0.9, 0.0, -0.7], C)):
+        p = rng.multivariate_normal([0, 0], [[1, rho], [rho, 1]], 200)
+        ax.scatter(p[:, 0] + 7 * k, p[:, 1], s=6, alpha=0.6, color=c)
+        ax.text(7 * k, 3.6, f"ρ = {rho}", ha="center", color=c, fontweight="bold")
+    ax.set_ylim(-4, 4.5); ax.set_xticks([]); ax.set_title("Корреляция: насколько точки «вытянуты» вдоль прямой")
+    save(fig, "descriptive_stats")
+
+
+# 36. Множества: диаграммы Венна
+def venn():
+    from matplotlib.patches import Circle
+    fig, axes = plt.subplots(1, 4, figsize=(15, 3.4))
+    titles = ["A ∪ B (объединение)", "A ∩ B (пересечение)", "A \\ B (разность)", "Aᶜ (дополнение)"]
+    yy, xx = np.mgrid[-1.6:1.6:400j, -2.2:2.2:550j]
+    inA = (xx + 0.6) ** 2 + yy**2 < 1; inB = (xx - 0.6) ** 2 + yy**2 < 1
+    masks = [inA | inB, inA & inB, inA & ~inB, ~inA]
+    for ax, t, m in zip(axes, titles, masks):
+        ax.imshow(m, extent=[-2.2, 2.2, -1.6, 1.6], origin="lower", cmap="Blues", vmin=0, vmax=1.6, alpha=0.9)
+        ax.add_patch(Circle((-0.6, 0), 1, fill=False, lw=2)); ax.add_patch(Circle((0.6, 0), 1, fill=False, lw=2))
+        ax.text(-1.2, 1.1, "A", fontsize=13, fontweight="bold"); ax.text(1.05, 1.1, "B", fontsize=13, fontweight="bold")
+        ax.set_title(t); ax.set_xticks([]); ax.set_yticks([]); ax.grid(False)
+    save(fig, "venn")
+
+
 if __name__ == "__main__":
     for fn in [dot_product, matrix_transform, eigen, pca, gd_contours, optimizers, activations,
                distributions, mvn, clt, entropy_kl, bias_variance, roc_pr, softmax_temp,
                attention, diffusion, lr_schedule, l1_l2,
                functions_gallery, derivative_tangent, taylor, convexity_saddle, kl_fit, calibration,
                kernel_trick, gaussian_process, value_iteration, spectral_clustering, double_descent,
-               wasserstein]:
+               wasserstein, unit_circle, integral_area, equations, sequences_limits,
+               descriptive_stats, venn]:
         fn()
