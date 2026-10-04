@@ -417,8 +417,310 @@ def l1_l2():
     save(fig, "l1_l2")
 
 
+# ---------------------------------------------------------------------------
+# Новые иллюстрации: база для начинающих и продвинутые модули
+# ---------------------------------------------------------------------------
+
+# 19. Галерея функций
+def functions_gallery():
+    x = np.linspace(-3, 3, 400)
+    xp = np.linspace(0.01, 6, 400)
+    fig, axes = plt.subplots(1, 4, figsize=(16, 3.6))
+    axes[0].plot(x, 2 * x + 1, color=C[0], lw=2, label="y = 2x + 1")
+    axes[0].plot(x, -0.5 * x, color=C[1], lw=2, label="y = −0.5x")
+    axes[0].set_title("Линейные: наклон k, сдвиг b"); axes[0].legend(fontsize=9)
+    for p, c in zip([1, 2, 3], C):
+        axes[1].plot(x, x**p, color=c, lw=2, label=f"y = x^{p}")
+    axes[1].set_ylim(-5, 9); axes[1].set_title("Степенные"); axes[1].legend(fontsize=9)
+    axes[2].plot(x, np.exp(x), color=C[0], lw=2, label="eˣ")
+    axes[2].plot(x, 2.0**x, color=C[2], lw=2, label="2ˣ")
+    axes[2].plot(x, np.exp(-x), color=C[1], lw=2, ls="--", label="e⁻ˣ")
+    axes[2].set_ylim(0, 10); axes[2].set_title("Экспоненты: рост и затухание"); axes[2].legend(fontsize=9)
+    axes[3].plot(xp, np.log(xp), color=C[0], lw=2, label="ln x")
+    axes[3].plot(xp, np.log2(xp), color=C[2], lw=2, label="log₂ x")
+    axes[3].axhline(0, color="k", lw=0.6); axes[3].axvline(1, color="gray", ls=":")
+    axes[3].text(1.1, -3.3, "ln 1 = 0", color="gray")
+    axes[3].set_ylim(-4, 3); axes[3].set_title("Логарифмы: обратные к экспоненте"); axes[3].legend(fontsize=9)
+    save(fig, "functions_gallery")
+
+
+# 20. Производная = наклон касательной
+def derivative_tangent():
+    f = lambda x: 0.3 * x**3 - x + 1
+    df = lambda x: 0.9 * x**2 - 1
+    x = np.linspace(-2.5, 2.5, 400)
+    fig, axes = plt.subplots(1, 2, figsize=(12, 4.2))
+    ax = axes[0]
+    ax.plot(x, f(x), color=C[0], lw=2.5, label="f(x)")
+    x0 = 1.5
+    for h, c in [(1.0, C[3]), (0.5, C[4]), (0.1, C[1])]:
+        k = (f(x0 + h) - f(x0)) / h
+        ax.plot(x, f(x0) + k * (x - x0), color=c, lw=1.2, ls="--", label=f"секущая h={h}: наклон {k:.2f}")
+    ax.plot(x, f(x0) + df(x0) * (x - x0), color=C[2], lw=2, label=f"касательная: f′({x0}) = {df(x0):.2f}")
+    ax.plot(x0, f(x0), "ko"); ax.set_ylim(-2, 4); ax.legend(fontsize=8, loc="upper left")
+    ax.set_title("Производная — предел наклона секущей при h → 0")
+    ax = axes[1]
+    ax.plot(x, f(x), color=C[0], lw=2.5, label="f(x)")
+    ax.plot(x, df(x), color=C[1], lw=2, label="f′(x)")
+    for r in [-np.sqrt(1 / 0.9), np.sqrt(1 / 0.9)]:
+        ax.axvline(r, color="gray", ls=":"); ax.plot(r, f(r), "o", color=C[2], ms=8)
+    ax.axhline(0, color="k", lw=0.6); ax.set_ylim(-2, 4); ax.legend()
+    ax.set_title("f′ = 0 в экстремумах; f′ > 0 — функция растёт, f′ < 0 — убывает")
+    save(fig, "derivative_tangent")
+
+
+# 21. Ряд Тейлора
+def taylor():
+    x = np.linspace(-2 * np.pi, 2 * np.pi, 400)
+    fig, axes = plt.subplots(1, 2, figsize=(12, 4))
+    axes[0].plot(x, np.sin(x), color="k", lw=2.5, label="sin x")
+    from math import factorial
+    approx = np.zeros_like(x)
+    for n, c in zip(range(0, 8), C * 2):
+        k = 2 * n + 1
+        approx = approx + (-1) ** n * x**k / factorial(k)
+        if n in (0, 1, 2, 4):
+            axes[0].plot(x, approx, color=c, lw=1.6, ls="--", label=f"до x^{k}")
+    axes[0].set_ylim(-2, 2); axes[0].legend(fontsize=8); axes[0].set_title("Тейлор: чем больше членов, тем шире область точности")
+    f = lambda x: np.log(1 + np.exp(x))
+    x = np.linspace(-4, 4, 400); x0 = 1.0
+    s = 1 / (1 + np.exp(-x0))
+    axes[1].plot(x, f(x), color="k", lw=2.5, label="softplus(x)")
+    axes[1].plot(x, f(x0) + s * (x - x0), color=C[0], ls="--", lw=1.8, label="1-й порядок (градиент)")
+    axes[1].plot(x, f(x0) + s * (x - x0) + 0.5 * s * (1 - s) * (x - x0) ** 2, color=C[1], ls="--", lw=1.8, label="2-й порядок (гессиан)")
+    axes[1].plot(x0, f(x0), "ko"); axes[1].set_ylim(-1, 5); axes[1].legend(fontsize=9)
+    axes[1].set_title("GD использует 1-й порядок, метод Ньютона — 2-й")
+    save(fig, "taylor")
+
+
+# 22. Выпуклость и седловая точка
+def convexity_saddle():
+    fig = plt.figure(figsize=(15, 4.4))
+    x = np.linspace(-2, 2, 300)
+    ax = fig.add_subplot(1, 3, 1)
+    ax.plot(x, x**2, color=C[0], lw=2.5, label="выпуклая x²")
+    ax.plot(x, x**4 - 2 * x**2 + 0.3 * x, color=C[1], lw=2.5, label="невыпуклая: 2 минимума")
+    ax.plot([-1.5, 1.2], [2.25, 1.44], "o--", color=C[0], lw=1)
+    ax.set_ylim(-2, 4); ax.legend(fontsize=9); ax.set_title("Хорда над графиком ⇔ выпуклость")
+    X, Y = np.meshgrid(np.linspace(-2, 2, 60), np.linspace(-2, 2, 60))
+    for i, (Z, t) in enumerate([(X**2 + Y**2, "минимум: H ≻ 0"), (X**2 - Y**2, "седло: λ разных знаков")]):
+        ax = fig.add_subplot(1, 3, i + 2, projection="3d")
+        ax.plot_surface(X, Y, Z, cmap="coolwarm", alpha=0.85, linewidth=0)
+        ax.scatter([0], [0], [0], color="k", s=40)
+        ax.set_title(t); ax.set_xticks([]); ax.set_yticks([]); ax.set_zticks([])
+    save(fig, "convexity_saddle")
+
+
+# 23. Forward vs reverse KL при подгонке гауссианы к бимодальному распределению
+def kl_fit():
+    x = np.linspace(-8, 8, 2000); dx = x[1] - x[0]
+    P = 0.5 * stats.norm.pdf(x, -2.5, 0.8) + 0.5 * stats.norm.pdf(x, 2.5, 0.8)
+    best_f, best_r = None, None
+    for mu in np.linspace(-4, 4, 81):
+        for s in np.linspace(0.3, 4, 75):
+            Q = stats.norm.pdf(x, mu, s) + 1e-300
+            f = np.sum(P * np.log((P + 1e-300) / Q)) * dx
+            r = np.sum(Q * np.log(Q / (P + 1e-300))) * dx
+            if best_f is None or f < best_f[0]: best_f = (f, mu, s)
+            if best_r is None or r < best_r[0]: best_r = (r, mu, s)
+    fig, axes = plt.subplots(1, 2, figsize=(12, 3.8), sharey=True)
+    for ax, (val, mu, s), t, c in [(axes[0], best_f, "min KL(P‖Q) — forward: накрывает обе моды", C[0]),
+                                   (axes[1], best_r, "min KL(Q‖P) — reverse: садится на одну моду", C[1])]:
+        ax.fill_between(x, P, color="gray", alpha=0.3, label="P (данные)")
+        ax.plot(x, stats.norm.pdf(x, mu, s), color=c, lw=2.5, label=f"Q = N({mu:.1f}, {s:.2f}²)")
+        ax.set_title(t, fontsize=11); ax.legend(fontsize=9)
+    save(fig, "kl_forward_reverse")
+
+
+# 24. Калибровка
+def calibration():
+    rng = np.random.default_rng(0)
+    n = 20000
+    true_p = rng.beta(2, 2, n); y = rng.random(n) < true_p
+    logit = np.log(true_p / (1 - true_p))
+    over = 1 / (1 + np.exp(-2.5 * logit))      # переуверенная модель
+    fig, ax = plt.subplots(figsize=(5.8, 5))
+    bins = np.linspace(0, 1, 11)
+    for p, c, lab in [(true_p, C[2], "откалибрована"), (over, C[1], "переуверена (как часто у глубоких сетей)")]:
+        idx = np.digitize(p, bins) - 1
+        conf = [p[idx == b].mean() for b in range(10) if (idx == b).sum() > 50]
+        acc = [y[idx == b].mean() for b in range(10) if (idx == b).sum() > 50]
+        ece = sum((idx == b).mean() * abs(p[idx == b].mean() - y[idx == b].mean()) for b in range(10) if (idx == b).sum() > 0)
+        ax.plot(conf, acc, "o-", color=c, lw=2, label=f"{lab}, ECE={ece:.3f}")
+    ax.plot([0, 1], [0, 1], "k--", lw=1, label="идеал")
+    ax.set_xlabel("предсказанная вероятность"); ax.set_ylabel("реальная доля позитивов")
+    ax.set_title("Reliability diagram"); ax.legend(fontsize=8)
+    save(fig, "calibration")
+
+
+# 25. Ядровой трюк
+def kernel_trick():
+    rng = np.random.default_rng(2)
+    n = 200
+    r = np.r_[rng.uniform(0, 1, n), rng.uniform(1.6, 2.4, n)]
+    t = rng.uniform(0, 2 * np.pi, 2 * n)
+    X = np.c_[r * np.cos(t), r * np.sin(t)]; y = np.r_[np.zeros(n), np.ones(n)]
+    fig = plt.figure(figsize=(12, 4.6))
+    ax = fig.add_subplot(1, 2, 1)
+    ax.scatter(*X[y == 0].T, s=10, color=C[0]); ax.scatter(*X[y == 1].T, s=10, color=C[1])
+    ax.set_aspect("equal"); ax.set_title("В исходном 2D прямой не разделить")
+    ax = fig.add_subplot(1, 2, 2, projection="3d")
+    z = (X**2).sum(1)
+    ax.scatter(X[y == 0, 0], X[y == 0, 1], z[y == 0], s=8, color=C[0])
+    ax.scatter(X[y == 1, 0], X[y == 1, 1], z[y == 1], s=8, color=C[1])
+    G = np.linspace(-2.5, 2.5, 10); GX, GY = np.meshgrid(G, G)
+    ax.plot_surface(GX, GY, np.full_like(GX, 1.7), alpha=0.25, color=C[2])
+    ax.set_title("φ(x) = (x₁, x₂, x₁² + x₂²): разделяет плоскость")
+    save(fig, "kernel_trick")
+
+
+# 26. Гауссовский процесс
+def gaussian_process():
+    rng = np.random.default_rng(4)
+    k = lambda a, b, l=0.8: np.exp(-0.5 * (a[:, None] - b[None, :]) ** 2 / l**2)
+    Xtr = np.array([-3.5, -2.0, -0.5, 1.0, 2.5]); ytr = np.sin(Xtr) + 0.05 * rng.normal(size=5)
+    xs = np.linspace(-5, 5, 300)
+    K = k(Xtr, Xtr) + 1e-3 * np.eye(5); Ks = k(xs, Xtr); Kss = k(xs, xs)
+    mu = Ks @ np.linalg.solve(K, ytr); cov = Kss - Ks @ np.linalg.solve(K, Ks.T)
+    sd = np.sqrt(np.clip(np.diag(cov), 0, None))
+    fig, axes = plt.subplots(1, 2, figsize=(13, 4))
+    prior = rng.multivariate_normal(np.zeros(300), Kss + 1e-6 * np.eye(300), 4)
+    for p, c in zip(prior, C): axes[0].plot(xs, p, color=c, lw=1.5)
+    axes[0].set_title("Априор: случайные гладкие функции из ядра RBF")
+    axes[1].fill_between(xs, mu - 2 * sd, mu + 2 * sd, color=C[0], alpha=0.2, label="±2σ")
+    post = rng.multivariate_normal(mu, cov + 1e-6 * np.eye(300), 3)
+    for p in post: axes[1].plot(xs, p, color=C[0], lw=0.8, alpha=0.6)
+    axes[1].plot(xs, mu, color=C[0], lw=2.5, label="среднее"); axes[1].plot(xs, np.sin(xs), "k--", lw=1, label="истина")
+    axes[1].scatter(Xtr, ytr, color=C[1], zorder=5, s=50, label="данные")
+    axes[1].legend(fontsize=8, loc="lower left"); axes[1].set_title("Апостериор: неопределённость растёт вдали от данных")
+    save(fig, "gaussian_process")
+
+
+# 27. Value iteration на gridworld
+def value_iteration():
+    H, W, gamma = 5, 6, 0.9
+    goal, pit, walls = (0, 5), (1, 5), {(1, 1), (2, 1), (3, 3)}
+    V = np.zeros((H, W)); acts = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+    def step(s, a):
+        r, c = s[0] + a[0], s[1] + a[1]
+        if not (0 <= r < H and 0 <= c < W) or (r, c) in walls: return s
+        return (r, c)
+    for _ in range(100):
+        Vn = V.copy()
+        for r in range(H):
+            for c in range(W):
+                s = (r, c)
+                if s in walls or s in (goal, pit): continue
+                Vn[r, c] = max(-0.04 + gamma * (1.0 if step(s, a) == goal else -1.0 if step(s, a) == pit else V[step(s, a)]) for a in acts)
+        V = Vn
+    fig, ax = plt.subplots(figsize=(7, 5.2))
+    V[goal], V[pit] = 1.0, -1.0
+    M = np.ma.array(V, mask=np.zeros_like(V, bool))
+    for w in walls: M.mask[w] = True
+    im = ax.imshow(M, cmap="RdYlGn", vmin=-1, vmax=1)
+    arrows = {(-1, 0): "↑", (1, 0): "↓", (0, -1): "←", (0, 1): "→"}
+    for r in range(H):
+        for c in range(W):
+            s = (r, c)
+            if s in walls: ax.text(c, r, "■", ha="center", va="center", fontsize=20, color="gray"); continue
+            if s == goal: ax.text(c, r, "+1", ha="center", va="center", fontsize=14, fontweight="bold"); continue
+            if s == pit: ax.text(c, r, "−1", ha="center", va="center", fontsize=14, fontweight="bold"); continue
+            best = max(acts, key=lambda a: (1.0 if step(s, a) == goal else -1.0 if step(s, a) == pit else V[step(s, a)]))
+            ax.text(c, r - 0.15, arrows[best], ha="center", va="center", fontsize=16)
+            ax.text(c, r + 0.25, f"{V[r, c]:.2f}", ha="center", va="center", fontsize=8)
+    ax.set_xticks([]); ax.set_yticks([]); ax.grid(False)
+    ax.set_title("Value iteration: V(s) и жадная политика (γ = 0.9, штраф за шаг −0.04)")
+    fig.colorbar(im, ax=ax, fraction=0.04)
+    save(fig, "value_iteration")
+
+
+# 28. Спектральная кластеризация
+def spectral_clustering():
+    rng = np.random.default_rng(0)
+    n = 150
+    t = rng.uniform(0, np.pi, n)
+    A = np.c_[np.cos(t), np.sin(t)] + 0.06 * rng.normal(size=(n, 2))
+    B = np.c_[1 - np.cos(t), 0.5 - np.sin(t)] + 0.06 * rng.normal(size=(n, 2))
+    X = np.r_[A, B]
+    D2 = ((X[:, None] - X[None]) ** 2).sum(-1)
+    Wm = np.exp(-D2 / (2 * 0.1**2)); np.fill_diagonal(Wm, 0)
+    L = np.diag(Wm.sum(1)) - Wm
+    Dm = np.diag(1 / np.sqrt(Wm.sum(1)))
+    w, V = np.linalg.eigh(Dm @ L @ Dm)
+    fied = V[:, 1]
+    # k-means на исходных координатах для сравнения
+    c = X[[0, n]]
+    for _ in range(20):
+        lab = ((X[:, None] - c[None]) ** 2).sum(-1).argmin(1)
+        c = np.array([X[lab == j].mean(0) for j in range(2)])
+    fig, axes = plt.subplots(1, 3, figsize=(15, 4))
+    axes[0].scatter(*X.T, c=lab, cmap="coolwarm", s=10); axes[0].set_title("k-means: режет «по прямой»")
+    axes[1].scatter(*X.T, c=fied > 0, cmap="coolwarm", s=10); axes[1].set_title("Спектральная: знак вектора Фидлера")
+    axes[2].plot(np.sort(fied), color=C[0], lw=2); axes[2].axhline(0, color="k", lw=0.6)
+    axes[2].set_title(f"Отсортированный 2-й собственный вектор лапласиана\nλ₁={w[0]:.3f}, λ₂={w[1]:.3f}, λ₃={w[2]:.3f}")
+    for ax in axes[:2]: ax.set_aspect("equal")
+    save(fig, "spectral_clustering")
+
+
+# 29. Double descent
+def double_descent():
+    rng = np.random.default_rng(1)
+    n = 40
+    f = lambda x: np.sin(2 * np.pi * x)
+    xtr = rng.uniform(-1, 1, n); ytr = f(xtr) + 0.2 * rng.normal(size=n)
+    xte = rng.uniform(-1, 1, 2000); yte = f(xte) + 0.2 * rng.normal(size=2000)
+    widths = np.unique(np.r_[np.arange(4, 60, 4), np.geomspace(60, 3000, 14).astype(int)])
+    te_err = []
+    for p in widths:
+        errs = []
+        for seed in range(60):
+            r = np.random.default_rng(seed)
+            a = r.normal(size=p); b = r.uniform(-1, 1, p) * np.abs(a)
+            phi = lambda x: np.maximum(0, np.outer(x, a) + b)        # случайные ReLU-признаки
+            w = np.linalg.pinv(phi(xtr)) @ ytr                       # решение минимальной нормы
+            errs.append(np.mean((phi(xte) @ w - yte) ** 2))
+        te_err.append(np.median(errs))
+    fig, ax = plt.subplots(figsize=(8, 3.8))
+    ax.plot(widths, te_err, "o-", color=C[1], ms=4, lw=1.8)
+    ax.axvline(n, color="k", ls="--", lw=1)
+    ax.text(n * 1.08, max(te_err) * 0.8, "порог интерполяции:\nпараметров ≈ N = 40", fontsize=9)
+    ax.set_xscale("log"); ax.set_yscale("log")
+    ax.set_xlabel("число случайных ReLU-признаков (лог. шкала)"); ax.set_ylabel("test MSE (медиана по 60 запускам)")
+    ax.set_title("Double descent: пик у порога интерполяции, дальше ошибка снова падает")
+    save(fig, "double_descent")
+
+
+# 30. Wasserstein vs KL
+def wasserstein():
+    shifts = np.linspace(0, 6, 61)
+    x = np.linspace(-10, 16, 4000); dx = x[1] - x[0]
+    P = stats.norm.pdf(x, 0, 0.5)
+    kl, js, w1 = [], [], []
+    for s in shifts:
+        Q = stats.norm.pdf(x, s, 0.5)
+        kl.append(np.sum(P * np.log((P + 1e-300) / (Q + 1e-300))) * dx)
+        M = 0.5 * (P + Q)
+        js.append(0.5 * np.sum(P * np.log((P + 1e-300) / (M + 1e-300))) * dx + 0.5 * np.sum(Q * np.log((Q + 1e-300) / (M + 1e-300))) * dx)
+        w1.append(s)
+    fig, axes = plt.subplots(1, 2, figsize=(12, 3.8))
+    axes[0].fill_between(x, P, alpha=0.4, color=C[0], label="P = N(0, 0.5²)")
+    axes[0].fill_between(x, stats.norm.pdf(x, 4, 0.5), alpha=0.4, color=C[1], label="Q = N(θ, 0.5²), θ = 4")
+    axes[0].annotate("", xy=(4, 0.5), xytext=(0, 0.5), arrowprops=dict(arrowstyle="->", lw=2))
+    axes[0].text(1.2, 0.56, "перевезти массу на θ"); axes[0].set_xlim(-3, 7); axes[0].legend(fontsize=9)
+    axes[0].set_title("Оптимальный транспорт: «сколько работы» сдвинуть P в Q")
+    axes[1].plot(shifts, w1, color=C[2], lw=2.5, label="W₁ = |θ| — гладко растёт")
+    axes[1].plot(shifts, js, color=C[1], lw=2.5, label="JS → log 2: градиент ≈ 0")
+    axes[1].plot(shifts, np.minimum(kl, 6), color=C[0], lw=1.5, ls="--", label="KL (обрезано): быстро растёт")
+    axes[1].set_xlabel("сдвиг θ"); axes[1].legend(fontsize=9)
+    axes[1].set_title("Почему WGAN: расстояние Вассерштейна даёт полезный градиент")
+    save(fig, "wasserstein")
+
+
 if __name__ == "__main__":
     for fn in [dot_product, matrix_transform, eigen, pca, gd_contours, optimizers, activations,
                distributions, mvn, clt, entropy_kl, bias_variance, roc_pr, softmax_temp,
-               attention, diffusion, lr_schedule, l1_l2]:
+               attention, diffusion, lr_schedule, l1_l2,
+               functions_gallery, derivative_tangent, taylor, convexity_saddle, kl_fit, calibration,
+               kernel_trick, gaussian_process, value_iteration, spectral_clustering, double_descent,
+               wasserstein]:
         fn()
