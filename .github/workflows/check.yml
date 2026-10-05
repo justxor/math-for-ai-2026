@@ -1,0 +1,28 @@
+name: Проверка кода курса
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  snippets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Зависимости (PyTorch — CPU-сборка)
+        run: |
+          pip install numpy scipy matplotlib scikit-learn
+          pip install torch --index-url https://download.pytorch.org/whl/cpu
+      - name: Весь код из README.md и BASICS.md запускается
+        run: python tests/check_snippets.py
+      - name: Иллюстрации генерируются
+        run: MPLBACKEND=Agg python scripts/make_figures.py
+      - name: Ноутбуки соответствуют тексту курса
+        run: |
+          python scripts/build_notebooks.py
+          git diff --exit-code notebooks/ || (echo "Запустите python scripts/build_notebooks.py и закоммитьте notebooks/" && exit 1)
