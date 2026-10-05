@@ -4,6 +4,8 @@
 >
 > **Как пользоваться:** пройди [входной тест](#test) — он подскажет, какие разделы можно пропустить. Каждый раздел заканчивается мини-практикой с ответами под спойлером.
 
+> 📓 [Ноутбук с кодом и иллюстрациями](notebooks/00a_basics_full.ipynb) · [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/justxor/math-for-ai-2026/blob/main/notebooks/00a_basics_full.ipynb) · 📖 [Глоссарий терминов RU ↔ EN](GLOSSARY.md)
+
 ![level](https://img.shields.io/badge/уровень-с%20нуля-brightgreen)
 ![time](https://img.shields.io/badge/время-2–3%20недели%20по%201%20часу-blue)
 

@@ -10,6 +10,9 @@
 ![lang](https://img.shields.io/badge/язык-русский-red)
 ![year](https://img.shields.io/badge/актуально-2026-green)
 ![license](https://img.shields.io/badge/license-MIT-lightgrey)
+[![check](https://github.com/justxor/math-for-ai-2026/actions/workflows/check.yml/badge.svg)](https://github.com/justxor/math-for-ai-2026/actions/workflows/check.yml)
+![notebooks](https://img.shields.io/badge/ноутбуки-26%20в%20Colab-orange)
+![glossary](https://img.shields.io/badge/глоссарий-162%20термина-purple)
 
 ---
 
@@ -17,6 +20,26 @@
 > 🏋️ В конце каждого модуля — блок **«Практика модуля»** с решениями под спойлером, в конце курса — [Практикум на 60 задач](#practice) и [160 вопросов с собеседований](#questions).
 > 📘 **Нет математической базы?** Начни с отдельного справочника [**BASICS.md — математика с нуля**](BASICS.md): 12 разделов от дробей и процентов до интегралов и матриц, 36 задач с ответами и входной тест.
 > 🧭 Три уровня: 🟢 **база** (модуль 00½ и простые задачи), 🟡 **ядро** (модули 01–13), 🔴 **продвинутое** (модули 14–17 и задачи 51–60), 🧰 **прикладное** (модули 18–23). 30 иллюстраций и 25+ схем.
+
+## 🚀 С чего начать
+
+| Ваш уровень | Маршрут |
+|-------------|---------|
+| 🌱 Математику почти не помню | [BASICS.md](BASICS.md) → [00½](#m00b) → модули 01–06 → [задачи 41–50](#p-easy) |
+| 🧑‍💻 Пишу код, готовлюсь к ML-собеседованию | [01–13](#m01) по [плану на 3 недели](#m00) → [Практикум](#practice) → [160 вопросов](#questions) |
+| 🧠 Работаю с LLM / DL | [02](#m02), [03–05](#m03), [08](#m08), [11–13](#m11) → [14 RL](#m14), [20 RAG](#m20) |
+| 📊 Data Scientist в продукте | [06–10](#m06) → [18 ряды](#m18), [19 причинность](#m19), [22 неопределённость](#m22) |
+| 🔬 Иду в research | всё по порядку + [14–17](#m14) и [задачи 51–60](#p-adv) |
+
+**Инструменты курса:**
+
+| | Что | Зачем |
+|---|-----|-------|
+| 📓 | [26 Jupyter-ноутбуков](notebooks/README.md) с кнопкой «Open in Colab» | весь код курса и «лаборатории» с иллюстрациями — меняйте параметры и смотрите |
+| 📘 | [BASICS.md — математика с нуля](BASICS.md) | школьная база: 12 разделов, 36 задач |
+| 📖 | [GLOSSARY.md — 162 термина RU ↔ EN](GLOSSARY.md) | читать статьи и документацию на английском |
+| 🃏 | [Колода Anki: 160 вопросов + 45 формул](anki/README.md) | интервальное повторение, 15 минут в день |
+| ✅ | [Автопроверка в GitHub Actions](.github/workflows/check.yml) | весь код курса запускается при каждом изменении |
 
 ## 📚 Оглавление
 
@@ -50,6 +73,7 @@
 - [⚡ Шпаргалка на одной странице](#cheatsheet)
 - [❓ 160 вопросов с собеседований](#questions)
 - [🗺️ Дорожная карта и лучшие источники](#roadmap)
+- 📓 [Ноутбуки](notebooks/README.md) · 📖 [Глоссарий RU ↔ EN](GLOSSARY.md) · 🃏 [Колода Anki](anki/README.md)
 
 ## 🗺️ Карта курса
 
@@ -212,6 +236,8 @@ Telegram-каналы, которые удобно читать между мо�
 <a id="m00b"></a>
 
 # 00½. База для начинающих: школьная математика за один вечер
+
+> 📓 [Ноутбук модуля](notebooks/00b_basics_short.ipynb) · [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/justxor/math-for-ai-2026/blob/main/notebooks/00b_basics_short.ipynb)
 
 > Если формулы в статьях пугают — начни отсюда. Этот модуль восстанавливает ровно ту школьную базу, на которой стоит весь курс: функции, степени, логарифмы, суммы, наклон, вероятность «на пальцах». Если всё знакомо — пройди только [практику](#m00b-practice) и иди дальше.
 >
@@ -376,6 +402,8 @@ $-(\ln 0.9 + \ln 0.6 + \ln 0.99)/3 = (0.105 + 0.511 + 0.010)/3 \approx 0.209$. �
 
 # 01. Язык математики: обозначения, функции, логарифмы
 
+> 📓 [Ноутбук модуля](notebooks/01_notation.ipynb) · [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/justxor/math-for-ai-2026/blob/main/notebooks/01_notation.ipynb)
+
 > Половина «непонятности» статей по ML — это просто незнакомые обозначения. Этот модуль — словарь.
 
 ## Словарь обозначений
@@ -507,6 +535,8 @@ print((s(z + h) - s(z - h)) / (2 * h), s(z) * (1 - s(z)))   # 0.2217 0.2217
 <a id="m02"></a>
 
 # 02. Линейная алгебра
+
+> 📓 [Ноутбук модуля](notebooks/02_linear_algebra.ipynb) · [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/justxor/math-for-ai-2026/blob/main/notebooks/02_linear_algebra.ipynb)
 
 > Нейросеть — это в основном матричные умножения, перемежающиеся нелинейностями. Эмбеддинг — вектор. Батч — матрица. Изображение — тензор. Attention — три матричных умножения и softmax.
 
@@ -783,6 +813,8 @@ print(np.allclose(ratio[:3], sk.explained_variance_ratio_))  # True
 
 # 03. Матанализ: производные, градиенты, цепное правило
 
+> 📓 [Ноутбук модуля](notebooks/03_calculus.ipynb) · [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/justxor/math-for-ai-2026/blob/main/notebooks/03_calculus.ipynb)
+
 > Обучение нейросети = «подвинуть веса туда, где лосс меньше». Куда двигать, говорит градиент. Как его посчитать через 100 слоёв — говорит цепное правило.
 
 ## Производная
@@ -980,6 +1012,8 @@ print(grad_check(f, W, X.T @ G))   # ~1e-10
 
 # 04. Backpropagation и автодифференцирование
 
+> 📓 [Ноутбук модуля](notebooks/04_backprop.ipynb) · [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/justxor/math-for-ai-2026/blob/main/notebooks/04_backprop.ipynb)
+
 > Backprop — это цепное правило, применённое к графу вычислений в правильном порядке, с переиспользованием промежуточных результатов. Ничего больше.
 
 ## Граф вычислений
@@ -1143,6 +1177,8 @@ Backward: $\partial f/\partial f = 1$; умножение меняет мест�
 <a id="m05"></a>
 
 # 05. Оптимизация: от градиентного спуска до AdamW
+
+> 📓 [Ноутбук модуля](notebooks/05_optimization.ipynb) · [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/justxor/math-for-ai-2026/blob/main/notebooks/05_optimization.ipynb)
 
 > Обучение = минимизация эмпирического риска $\min_\theta \frac{1}{N}\sum_i \ell(f_\theta(\mathbf{x}_i), y_i) + \lambda R(\theta)$. Этот модуль — о том, как делать шаги к минимуму быстро и устойчиво.
 
@@ -1327,6 +1363,8 @@ $1 - \beta_2^t > 0.99 \Leftrightarrow 0.999^t < 0.01 \Leftrightarrow t > \ln 0.0
 
 # 06. Теория вероятностей
 
+> 📓 [Ноутбук модуля](notebooks/06_probability.ipynb) · [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/justxor/math-for-ai-2026/blob/main/notebooks/06_probability.ipynb)
+
 > Классификатор выдаёт распределение $p(y \mid \mathbf{x})$, языковая модель — $p(\text{следующий токен} \mid \text{контекст})$, диффузия учит $p(\text{изображение})$. Вероятность — язык, на котором ML описывает неопределённость.
 
 ## Базовые правила
@@ -1507,6 +1545,8 @@ pi_hat = 4 * ((u**2).sum(1) < 1).mean()
 <a id="m07"></a>
 
 # 07. Статистика: оценки, MLE/MAP, A/B-тесты
+
+> 📓 [Ноутбук модуля](notebooks/07_statistics.ipynb) · [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/justxor/math-for-ai-2026/blob/main/notebooks/07_statistics.ipynb)
 
 > Вероятность: «знаем модель — какие будут данные?». Статистика: «видим данные — какая модель?». Обучение модели — статистическое оценивание параметров.
 
@@ -1712,6 +1752,8 @@ print(false_pos / 2000)   # ≈ 0.2 вместо 0.05
 
 # 08. Теория информации: энтропия, кросс-энтропия, KL
 
+> 📓 [Ноутбук модуля](notebooks/08_information_theory.ipynb) · [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/justxor/math-for-ai-2026/blob/main/notebooks/08_information_theory.ipynb)
+
 > Почему классификаторы и LLM обучают на cross-entropy? Что такое perplexity? Откуда KL-штраф в RLHF и VAE? Всё это — один модуль.
 
 ## Информация и энтропия
@@ -1851,6 +1893,8 @@ print(kl(P, Q), kl(Q, P))   # 0.368, 0.511 — разные
 <a id="m09"></a>
 
 # 09. Функции потерь и метрики
+
+> 📓 [Ноутбук модуля](notebooks/09_losses_metrics.ipynb) · [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/justxor/math-for-ai-2026/blob/main/notebooks/09_losses_metrics.ipynb)
 
 > Лосс — то, что оптимизирует модель (должен быть дифференцируемым). Метрика — то, что важно бизнесу (может быть любой). Путать их — частая ошибка.
 
@@ -2007,6 +2051,8 @@ $-\log\sigma(z) = \log(1 + e^{-z})$, $-\log(1 - \sigma(z)) = \log(1 + e^{z})$. �
 <a id="m10"></a>
 
 # 10. Математика классического ML
+
+> 📓 [Ноутбук модуля](notebooks/10_classic_ml.ipynb) · [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/justxor/math-for-ai-2026/blob/main/notebooks/10_classic_ml.ipynb)
 
 > Классические модели — лучший полигон для математики: всё выводится на одном листе. И их до сих пор спрашивают на каждом собеседовании.
 
@@ -2171,6 +2217,8 @@ def kmeans(X, k, iters=50, seed=0):
 <a id="m11"></a>
 
 # 11. Математика глубокого обучения и трансформеров
+
+> 📓 [Ноутбук модуля](notebooks/11_deep_learning.ipynb) · [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/justxor/math-for-ai-2026/blob/main/notebooks/11_deep_learning.ipynb)
 
 > Нейросеть — композиция простых дифференцируемых функций. Трансформер — несколько матричных умножений, softmax, нормализация и residual-связи. Здесь — каждая формула, которую спрашивают.
 
@@ -2413,6 +2461,8 @@ Attention: $4d^2 = 67.1$M на слой. SwiGLU FFN: 3 матрицы $d \times 
 
 # 12. Генеративные модели: VAE, GAN, диффузия, LLM
 
+> 📓 [Ноутбук модуля](notebooks/12_generative.ipynb) · [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/justxor/math-for-ai-2026/blob/main/notebooks/12_generative.ipynb)
+
 > Все генеративные модели решают одну задачу — научиться $p_\theta(\mathbf{x}) \approx p_{\text{data}}(\mathbf{x})$ и уметь из неё сэмплировать. Различаются тем, как обходят невычислимый интеграл нормировки.
 
 | Семейство | Правдоподобие | Сэмплирование | Идея |
@@ -2614,6 +2664,8 @@ print(np.sqrt(abar[499]), np.sqrt(abar[-1]))   # ≈ 0.28 и ≈ 0.006
 
 # 13. Численная устойчивость и форматы чисел
 
+> 📓 [Ноутбук модуля](notebooks/13_numerics.ipynb) · [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/justxor/math-for-ai-2026/blob/main/notebooks/13_numerics.ipynb)
+
 > Формула верна на бумаге и даёт `NaN` на GPU. Этот модуль — о том, почему так бывает и как этого избежать.
 
 ## Форматы чисел с плавающей точкой
@@ -2735,6 +2787,8 @@ print(sigmoid([-1000, 0, 1000]))   # [0. 0.5 1.]
 <a id="m14"></a>
 
 # 14. 🚀 Продвинутое: математика обучения с подкреплением
+
+> 📓 [Ноутбук модуля](notebooks/14_reinforcement_learning.ipynb) · [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/justxor/math-for-ai-2026/blob/main/notebooks/14_reinforcement_learning.ipynb)
 
 > RL — это то, как учат reasoning-модели (o1, DeepSeek-R1), выравнивают LLM (RLHF) и обучают роботов и игровых агентов. Математика: марковские процессы, уравнения Беллмана и градиент политики.
 
@@ -2908,6 +2962,8 @@ print(pulls / pulls.sum())                    # большая часть тра
 
 # 15. 🚀 Продвинутое: графы, спектральная теория и GNN
 
+> 📓 [Ноутбук модуля](notebooks/15_graphs_gnn.ipynb) · [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/justxor/math-for-ai-2026/blob/main/notebooks/15_graphs_gnn.ipynb)
+
 > Социальные сети, молекулы, рекомендации, дорожные карты, знания для RAG — всё это графы. Математика графов — это линейная алгебра матриц смежности и лапласиана.
 
 ## Граф как матрица
@@ -3068,6 +3124,8 @@ for k in [1, 5, 50]:
 
 # 16. 🚀 Продвинутое: теория обучения и обобщение
 
+> 📓 [Ноутбук модуля](notebooks/16_learning_theory.ipynb) · [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/justxor/math-for-ai-2026/blob/main/notebooks/16_learning_theory.ipynb)
+
 > Почему модель, обученная на 10 000 примеров, работает на миллионах новых? Почему нейросеть с миллиардом параметров не переобучается катастрофически? Здесь — язык, на котором об этом говорят исследователи.
 
 ## Риск и обобщение
@@ -3205,6 +3263,8 @@ print(np.abs(X @ w - y).max(), np.linalg.norm(w - w_min))   # интерполи
 <a id="m17"></a>
 
 # 17. 🚀 Продвинутое: ядра, гауссовские процессы, оптимальный транспорт
+
+> 📓 [Ноутбук модуля](notebooks/17_kernels_gp_ot.ipynb) · [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/justxor/math-for-ai-2026/blob/main/notebooks/17_kernels_gp_ot.ipynb)
 
 > Три инструмента, которые постоянно всплывают в статьях: ядра (SVM, GP, attention как ядро, NTK), гауссовские процессы (байесовская оптимизация гиперпараметров) и оптимальный транспорт (WGAN, flow matching, метрики генеративных моделей).
 
@@ -3347,6 +3407,8 @@ print(np.mean(np.abs(a - b)))   # ≈ 2.0 — сдвиг среднего
 
 # 18. 🧰 Прикладное: временные ряды и прогнозирование
 
+> 📓 [Ноутбук модуля](notebooks/18_time_series.ipynb) · [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/justxor/math-for-ai-2026/blob/main/notebooks/18_time_series.ipynb)
+
 > Спрос, нагрузка на серверы, цены, метрики продукта, сенсоры — данные во времени есть почти в каждой компании. Главное отличие от обычного ML: **наблюдения зависят друг от друга, и будущее нельзя подсматривать**.
 
 ## Из чего состоит ряд
@@ -3468,6 +3530,8 @@ print(np.abs(y[test] - naive_season).mean(), np.abs(y[test] - moving_avg).mean()
 <a id="m19"></a>
 
 # 19. 🧰 Прикладное: причинный вывод и эксперименты
+
+> 📓 [Ноутбук модуля](notebooks/19_causal_inference.ipynb) · [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/justxor/math-for-ai-2026/blob/main/notebooks/19_causal_inference.ipynb)
 
 > ML отвечает на вопрос «что будет?», бизнес спрашивает «что будет, **если мы сделаем** X?». Скидка, новая фича, рассылка — это вмешательства, и корреляции из данных здесь могут обмануть.
 
@@ -3599,6 +3663,8 @@ $(130 - 100) - (96 - 80) = 30 - 16 = 14$. Наивное «до/после» д�
 <a id="m20"></a>
 
 # 20. 🧰 Прикладное: поиск, эмбеддинги и RAG
+
+> 📓 [Ноутбук модуля](notebooks/20_retrieval_rag.ipynb) · [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/justxor/math-for-ai-2026/blob/main/notebooks/20_retrieval_rag.ipynb)
 
 > RAG, поиск по документации, дедупликация, рекомендации «похожих» — всё это задача «найти ближайшие векторы среди миллионов». Здесь математика лексического поиска, плотных эмбеддингов, приближённого поиска соседей и ранжирования.
 
@@ -3738,6 +3804,8 @@ print(np.sum((a - b) ** 2), 2 - 2 * a @ b)   # совпадают
 
 # 21. 🧰 Прикладное: рекомендательные системы
 
+> 📓 [Ноутбук модуля](notebooks/21_recommender_systems.ipynb) · [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/justxor/math-for-ai-2026/blob/main/notebooks/21_recommender_systems.ipynb)
+
 > Лента, «с этим товаром покупают», музыка, видео, реклама — рекомендации приносят существенную долю выручки крупных онлайн-платформ. Математика: разреженные матрицы, низкоранговые разложения, ранжирующие метрики и баланс исследования и эксплуатации.
 
 ## Архитектура рекомендаций в продакшене
@@ -3847,6 +3915,8 @@ print(np.sqrt(np.mean(((P @ Q.T) - R)[~mask] ** 2)))   # ≈ 0.39 при шум�
 <a id="m22"></a>
 
 # 22. 🧰 Прикладное: байесовские методы и неопределённость
+
+> 📓 [Ноутбук модуля](notebooks/22_bayes_uncertainty.ipynb) · [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/justxor/math-for-ai-2026/blob/main/notebooks/22_bayes_uncertainty.ipynb)
 
 > Модель сказала «95% кот» — можно ли этому верить? В медицине, финансах, автопилоте и LLM-агентах важно не только предсказание, но и **насколько модель в нём уверена** — и умение сказать «не знаю».
 
@@ -3961,6 +4031,8 @@ print(round(q, 3), round(cover, 3))                     # покрытие ≈ 0
 
 # 23. 🧰 Прикладное: Фурье, свёртки и обработка сигналов
 
+> 📓 [Ноутбук модуля](notebooks/23_fourier_signals.ipynb) · [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/justxor/math-for-ai-2026/blob/main/notebooks/23_fourier_signals.ipynb)
+
 > Речь (Whisper), музыка, сенсоры, ЭКГ, вибрации станков, позиционные кодировки трансформеров и даже некоторые архитектуры LLM опираются на одну идею: **любой сигнал — сумма синусоид**.
 
 ## Идея преобразования Фурье
@@ -4070,6 +4142,8 @@ print(np.allclose(direct, via_fft))                          # True
 <a id="practice"></a>
 
 # 🏋️ Практикум: 60 задач с решениями
+
+> 📓 [Ноутбук с кодом всех решений](notebooks/practicum_60_tasks.ipynb) · [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/justxor/math-for-ai-2026/blob/main/notebooks/practicum_60_tasks.ipynb)
 
 > Сначала решай на бумаге или в ноутбуке, потом открывай ▶️. Задачи — в формате реальных собеседований: часть «на доске», часть «напиши на NumPy за 10 минут».
 > Все фрагменты кода начинаются с `import numpy as np` (опущено).
@@ -5210,7 +5284,8 @@ flowchart TD
 2. **Проверяй кодом.** Каждую формулу — численной проверкой в 5 строк.
 3. **Рисуй.** Перерисуй картинки из [`scripts/make_figures.py`](scripts/make_figures.py), меняя параметры.
 4. **Объясняй вслух.** Если не можешь объяснить формулу attention за 2 минуты — повтори модуль 11.
-5. **Интервальное повторение:** шпаргалка и 160 вопросов — раз в неделю.
+5. **Интервальное повторение:** [колода Anki](anki/README.md) по 15 минут в день и шпаргалка раз в неделю.
+6. **Английская терминология:** держите открытым [глоссарий](GLOSSARY.md), когда читаете статьи.
 
 ---
 
