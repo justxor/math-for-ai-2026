@@ -58,7 +58,7 @@
 
 ## Генеративные
 - ELBO = реконструкция − KL(q(z|x) ‖ p(z)).
-- Диффузия: $\mathbf{x}_t = \sqrt{\bar\alpha_t}\mathbf{x}_0 + \sqrt{1-\bar\alpha_t}\boldsymbol\varepsilon$, лосс $\lVert\boldsymbol\varepsilon - \boldsymbol\varepsilon_\theta\rVert^2$; CFG: $\boldsymbol\varepsilon_\varnothing + w(\boldsymbol\varepsilon_c - \boldsymbol\varepsilon_\varnothing)$.
+- Диффузия: $\mathbf{x}_t = \sqrt{\bar\alpha_t}\mathbf{x}_0 + \sqrt{1-\bar\alpha_t}\mathbf{\varepsilon}$, лосс $\lVert\mathbf{\varepsilon} - \mathbf{\varepsilon}_\theta\rVert^2$; CFG: $\mathbf{\varepsilon}_\varnothing + w(\mathbf{\varepsilon}_c - \mathbf{\varepsilon}_\varnothing)$.
 - DPO: $-\log\sigma\bigl(\beta[\log\frac{\pi}{\pi_{\text{ref}}}(y_w) - \log\frac{\pi}{\pi_{\text{ref}}}(y_l)]\bigr)$.
 
 ## 🚀 Продвинутое
