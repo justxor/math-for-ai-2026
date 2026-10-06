@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Собирает Jupyter-ноутбуки по модулям из кода в README.md и BASICS.md.
+"""Собирает Jupyter-ноутбуки по модулям из кода в modules/*.md, PRACTICE.md и BASICS.md.
 
 Запуск из корня репозитория:  python scripts/build_notebooks.py
 Ноутбуки появятся в notebooks/. Зависимостей, кроме стандартной библиотеки, нет.
@@ -21,6 +21,11 @@ MODULES = {
     "m20": "20_retrieval_rag", "m21": "21_recommender_systems", "m22": "22_bayes_uncertainty", "m23": "23_fourier_signals",
     "practice": "practicum",
 }
+
+
+def module_file(anchor):
+    """Файл курса, в котором лежит модуль: modules/<имя>.md или PRACTICE.md."""
+    return "PRACTICE.md" if anchor == "practice" else f"modules/{MODULES[anchor]}.md"
 
 
 FIGURES = {
@@ -136,23 +141,13 @@ def build(title, anchor, body, source_file, out_name, figs=(), fig_src=None):
 
 def main():
     OUT.mkdir(exist_ok=True)
-    readme = (ROOT / "README.md").read_text(encoding="utf-8")
-    parts = re.split(r'<a id="([^"]+)"></a>', readme)
-    sections, current = {}, None
-    for anchor, body in zip(parts[1::2], parts[2::2]):
-        if anchor in MODULES:
-            current = anchor
-            sections[current] = body
-        elif current and (anchor.startswith(current + "-") or (current == "practice" and anchor.startswith("p-"))):
-            sections[current] += body                  # вложенные якоря: m00b-practice, p-la, p-calc, …
-        else:
-            current = None
     index = []
     fig_src = figure_sources()
     for anchor, name in MODULES.items():
-        body = sections[anchor]
+        src = module_file(anchor)
+        body = (ROOT / src).read_text(encoding="utf-8")
         title = re.search(r"^# (.+)$", body, re.M).group(1)
-        n = build(title, anchor, body, "README.md", name, FIGURES.get(anchor, ()), fig_src)
+        n = build(title, anchor, body, src, name, FIGURES.get(anchor, ()), fig_src)
         index.append((name, title, n))
     basics = (ROOT / "BASICS.md").read_text(encoding="utf-8")
     n = build("Математическая база с нуля (BASICS.md)", "b1", basics, "BASICS.md", "00a_basics_full",

@@ -4,11 +4,19 @@
 Запуск:  python scripts/build_workbook.py
 """
 import json
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 REPO = "justxor/math-for-ai-2026"
-M = "https://github.com/" + REPO + "/blob/main/README.md#"
+sys.path.insert(0, str(ROOT / "scripts"))
+from build_notebooks import module_file  # noqa: E402
+
+
+def M(anchor):
+    """Ссылка на раздел курса: модули лежат в modules/, практикум — в PRACTICE.md."""
+    src = "PRACTICE.md" if anchor.startswith("p-") or anchor == "practice" else module_file(anchor)
+    return f"https://github.com/{REPO}/blob/main/{src}#{anchor}"
 
 # (номер, заголовок, условие, модуль, заготовка, проверка)
 EX = [
@@ -44,7 +52,7 @@ EX = [
  "def roc_auc(y, s):\n    # TODO\n    raise NotImplementedError", "check_auc(roc_auc)"),
 (16, "Шаг k-means", "Назначьте точки ближайшим центрам и пересчитайте центры. Верните `(новые_центры, метки)`.", "m10",
  "def kmeans_step(X, C):\n    # TODO\n    raise NotImplementedError", "check_kmeans_step(kmeans_step)"),
-(17, "Attention с маской", "$\\operatorname{softmax}(QK^\\top/\\sqrt{d})V$; при `causal=True` токен не видит будущие. Можно использовать свой `softmax` из упражнения 2.", "m11",
+(17, "Attention с маской", "$\\mathrm{softmax}(QK^\\top/\\sqrt{d})V$; при `causal=True` токен не видит будущие. Можно использовать свой `softmax` из упражнения 2.", "m11",
  "def attention(Q, K, V, causal=False):\n    # TODO\n    raise NotImplementedError", "check_attention(attention)"),
 (18, "Размер выхода свёртки", "$\\lfloor (H + 2P - D(K-1) - 1)/S \\rfloor + 1$.", "m11",
  "def conv_output_size(H, K, S=1, P=0, dilation=1):\n    # TODO\n    raise NotImplementedError", "check_conv(conv_output_size)"),
@@ -78,11 +86,11 @@ def main():
              "import numpy as np\nfrom checks import *"),
     ]
     for n, title, cond, mod, stub, check in EX:
-        cells.append(md(f"## {n}. {title}\n\n{cond}\n\n📖 Теория: [модуль {mod[1:]}]({M}{mod})"))
+        cells.append(md(f"## {n}. {title}\n\n{cond}\n\n📖 Теория: [модуль {mod[1:]}]({M(mod)})"))
         cells.append(code(stub))
         cells.append(code(check))
     cells.append(md("## 🎉 Готово\n\nЕсли все 20 проверок зелёные — переходите к [Практикуму на 100 задач]"
-                    f"({M}practice) и [мини-проектам 81–90]({M}p-projects)."))
+                    f"({M('practice')}) и [мини-проектам 81–90]({M('p-projects')})."))
     for i, c in enumerate(cells):
         c["id"] = f"w{i:03d}"
     nb = {"cells": cells, "metadata": {"kernelspec": {"display_name": "Python 3", "language": "python", "name": "python3"},
