@@ -13,11 +13,12 @@
 [![check](https://github.com/justxor/math-for-ai-2026/actions/workflows/check.yml/badge.svg)](https://github.com/justxor/math-for-ai-2026/actions/workflows/check.yml)
 ![notebooks](https://img.shields.io/badge/ноутбуки-26%20в%20Colab-orange)
 ![glossary](https://img.shields.io/badge/глоссарий-162%20термина-purple)
+![practice](https://img.shields.io/badge/практика-100%20задач%20+%2020%20автотестов-brightgreen)
 
 ---
 
 > 🎯 **Принцип курса:** никаких доказательств ради доказательств. Каждая тема отвечает на вопрос «где это в нейросети?» и проверяется кодом в 5–15 строк.
-> 🏋️ В конце каждого модуля — блок **«Практика модуля»** с решениями под спойлером, в конце курса — [Практикум на 60 задач](#practice) и [160 вопросов с собеседований](#questions).
+> 🏋️ В конце каждого модуля — блок **«Практика модуля»** с решениями под спойлером, в конце курса — [Практикум на 100 задач](#practice) и [рабочая тетрадь с автопроверкой](exercises/README.md) и [160 вопросов с собеседований](#questions).
 > 📘 **Нет математической базы?** Начни с отдельного справочника [**BASICS.md — математика с нуля**](BASICS.md): 12 разделов от дробей и процентов до интегралов и матриц, 36 задач с ответами и входной тест.
 > 🧭 Три уровня: 🟢 **база** (модуль 00½ и простые задачи), 🟡 **ядро** (модули 01–13), 🔴 **продвинутое** (модули 14–17 и задачи 51–60), 🧰 **прикладное** (модули 18–23). 30 иллюстраций и 25+ схем.
 
@@ -36,6 +37,8 @@
 | | Что | Зачем |
 |---|-----|-------|
 | 📓 | [26 Jupyter-ноутбуков](notebooks/README.md) с кнопкой «Open in Colab» | весь код курса и «лаборатории» с иллюстрациями — меняйте параметры и смотрите |
+| ✍️ | [Рабочая тетрадь: 20 упражнений с автопроверкой](exercises/README.md) | пишете функцию — сразу видите ✅ или ❌ с подсказкой |
+| 🏋️ | [Практикум: 100 задач](#practice) | разминка, продвинутые, «найди баг», оценки на салфетке, мини-проекты, собеседование |
 | 📘 | [BASICS.md — математика с нуля](BASICS.md) | школьная база: 12 разделов, 36 задач |
 | 📖 | [GLOSSARY.md — 162 термина RU ↔ EN](GLOSSARY.md) | читать статьи и документацию на английском |
 | 🃏 | [Колода Anki: 160 вопросов + 45 формул](anki/README.md) | интервальное повторение, 15 минут в день |
@@ -69,7 +72,7 @@
 - 🧰 [21. Рекомендательные системы](#m21)
 - 🧰 [22. Байесовские методы и неопределённость](#m22)
 - 🧰 [23. Фурье, свёртки и обработка сигналов](#m23)
-- [🏋️ Практикум: 60 задач с решениями](#practice)
+- [🏋️ Практикум: 100 задач с решениями](#practice) · ✍️ [Рабочая тетрадь с автопроверкой](exercises/README.md)
 - [⚡ Шпаргалка на одной странице](#cheatsheet)
 - [❓ 160 вопросов с собеседований](#questions)
 - [🗺️ Дорожная карта и лучшие источники](#roadmap)
@@ -4141,9 +4144,9 @@ print(np.allclose(direct, via_fft))                          # True
 
 <a id="practice"></a>
 
-# 🏋️ Практикум: 60 задач с решениями
+# 🏋️ Практикум: 100 задач с решениями
 
-> 📓 [Ноутбук с кодом всех решений](notebooks/practicum_60_tasks.ipynb) · [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/justxor/math-for-ai-2026/blob/main/notebooks/practicum_60_tasks.ipynb)
+> 📓 [Ноутбук с кодом всех решений](notebooks/practicum.ipynb) · [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/justxor/math-for-ai-2026/blob/main/notebooks/practicum.ipynb)
 
 > Сначала решай на бумаге или в ноутбуке, потом открывай ▶️. Задачи — в формате реальных собеседований: часть «на доске», часть «напиши на NumPy за 10 минут».
 > Все фрагменты кода начинаются с `import numpy as np` (опущено).
@@ -4160,6 +4163,10 @@ print(np.allclose(direct, via_fft))                          # True
 | [✨ LLM и генеративные](#p-gen) | 39–40 |
 | [🟢 Простые задачи для разминки](#p-easy) | 41–50 |
 | [🔴 Продвинутые задачи](#p-adv) | 51–60 |
+| [🐞 Найди баг](#p-bugs) | 61–70 |
+| [🧮 Оценка на салфетке](#p-fermi) | 71–80 |
+| [🛠 Мини-проекты с нуля](#p-projects) | 81–90 |
+| [🎤 Как на собеседовании](#p-interview) | 91–100 |
 
 ---
 
@@ -4933,9 +4940,715 @@ ReLU 1-липшицева, линейный слой — с константой
 
 ---
 
+<a id="p-bugs"></a>
+
+## 🐞 Найди баг (61–70)
+
+> Код запускается без ошибок, но считает **неправильно** — самые опасные баги в ML. Найдите ошибку, прежде чем открывать решение. Каждое решение заканчивается проверкой, которая ловит баг.
+
+### Задача 61. Softmax, который иногда возвращает NaN
+```py
+def softmax(z):
+    e = np.exp(z)
+    return e / e.sum(axis=-1, keepdims=True)
+```
+
+<details><summary>▶️ Решение</summary>
+
+Переполнение `exp` при больших логитах (модуль 13). Вычитаем максимум по той же оси:
+
+```python
+def softmax(z):
+    e = np.exp(z - z.max(axis=-1, keepdims=True))
+    return e / e.sum(axis=-1, keepdims=True)
+p = softmax(np.array([[1000., 1001.], [1., 2.]]))
+assert np.all(np.isfinite(p)) and np.allclose(p.sum(1), 1)
+```
+</details>
+
+### Задача 62. Стандартизация по батчу
+```py
+X = np.random.randn(256, 10) * 5 + 3          # 256 объектов, 10 признаков
+X_norm = (X - X.mean()) / X.std()
+```
+
+<details><summary>▶️ Решение</summary>
+
+Среднее и std посчитаны по **всей матрице**, а нужно по каждому признаку (ось объектов `axis=0`). Если признаки в разных масштабах, нормировка не работает.
+
+```python
+X = np.random.randn(256, 10) * np.arange(1, 11) + 3
+X_norm = (X - X.mean(axis=0)) / X.std(axis=0)
+assert np.allclose(X_norm.mean(0), 0, atol=1e-10) and np.allclose(X_norm.std(0), 1)
+```
+</details>
+
+### Задача 63. Кросс-энтропия по неправильной оси
+```py
+logits = np.random.randn(32, 5); y = np.random.randint(0, 5, 32)
+p = softmax(logits)
+loss = -np.mean(np.log(p[y, np.arange(32)]))
+```
+
+<details><summary>▶️ Решение</summary>
+
+Индексы перепутаны местами: `p[y, arange]` берёт строку по метке и столбец по номеру объекта (а при 32 > 5 ещё и падает с IndexError — повезло, что падает). Правильно — `p[объект, метка]`. Ещё лучше — считать через log-softmax, без `log(softmax)`:
+
+```python
+def cross_entropy(logits, y):
+    z = logits - logits.max(1, keepdims=True)
+    log_p = z - np.log(np.exp(z).sum(1, keepdims=True))
+    return -log_p[np.arange(len(y)), y].mean()
+logits = np.random.randn(32, 5); y = np.random.randint(0, 5, 32)
+assert np.isclose(cross_entropy(logits, y), -np.mean(np.log(softmax(logits)[np.arange(32), y])))
+```
+</details>
+
+### Задача 64. Утечка при нормировке
+```py
+from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import train_test_split
+X_scaled = StandardScaler().fit_transform(X)
+X_tr, X_te = train_test_split(X_scaled, test_size=0.2)
+```
+
+<details><summary>▶️ Решение</summary>
+
+Среднее и дисперсия посчитаны и по тесту — информация из теста «утекла» в обучение. Для нормировки эффект небольшой, но тот же паттерн с отбором признаков, таргет-энкодингом или PCA даёт сильно завышенные метрики. `fit` — только на train:
+
+```python
+from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import train_test_split
+X = np.random.randn(500, 4)
+X_tr, X_te = train_test_split(X, test_size=0.2, random_state=0)
+sc = StandardScaler().fit(X_tr)
+X_tr, X_te = sc.transform(X_tr), sc.transform(X_te)
+assert np.allclose(X_tr.mean(0), 0, atol=1e-10)            # среднее теста не обязано быть 0
+```
+Надёжный способ — `sklearn.pipeline.Pipeline`: внутри кросс-валидации он сам делает `fit` только на обучающих фолдах.
+</details>
+
+### Задача 65. Градиентный спуск, который уходит вверх
+```py
+w = np.zeros(3); X = np.random.randn(100, 3); y = X @ np.array([1., -2., .5])
+for _ in range(500):
+    grad = X.T @ (y - X @ w) / len(y)
+    w -= 0.1 * grad
+```
+
+<details><summary>▶️ Решение</summary>
+
+Знак градиента: для $L = \frac{1}{2N}\lVert X\mathbf{w} - \mathbf{y}\rVert^2$ градиент равен $X^\top(X\mathbf{w} - \mathbf{y})/N$, а в коде $X^\top(\mathbf{y} - X\mathbf{w})$ — шаг идёт в сторону роста лосса.
+
+```python
+w = np.zeros(3); X = np.random.randn(100, 3); y = X @ np.array([1., -2., .5])
+for _ in range(500):
+    w -= 0.1 * X.T @ (X @ w - y) / len(y)
+assert np.allclose(w, [1, -2, .5], atol=1e-3)
+```
+Привычка: всегда проверять, что лосс **уменьшается** на первых шагах, и сверять градиент численно (модуль 03).
+</details>
+
+### Задача 66. Adam без коррекции смещения
+```py
+m = v = 0
+for t in range(1, 6):
+    g = 1.0                                   # постоянный градиент
+    m = 0.9 * m + 0.1 * g
+    v = 0.999 * v + 0.001 * g**2
+    step = m / (np.sqrt(v) + 1e-8)
+    print(t, round(step, 3))
+```
+
+<details><summary>▶️ Решение</summary>
+
+Без деления на $1 - \beta^t$ первые шаги искажены: $m_1 = 0.1$, $v_1 = 0.001$, шаг $\approx 0.1/0.0316 \approx 3.16$ — в 3 раза больше «нормального» шага 1. С коррекцией шаг сразу правильный:
+
+```python
+m = v = 0
+for t in range(1, 6):
+    g = 1.0
+    m = 0.9 * m + 0.1 * g; v = 0.999 * v + 0.001 * g**2
+    step = (m / (1 - 0.9**t)) / (np.sqrt(v / (1 - 0.999**t)) + 1e-8)
+    assert np.isclose(step, 1.0)
+```
+</details>
+
+### Задача 67. Dropout на инференсе
+```py
+def dropout(h, p=0.5, training=True):
+    mask = np.random.rand(*h.shape) > p
+    return h * mask                           # и на обучении, и на инференсе
+```
+
+<details><summary>▶️ Решение</summary>
+
+Две ошибки: нет масштабирования на $1/(1-p)$ — матожидание активаций на обучении вдвое меньше, чем на инференсе; и маска применяется всегда. Inverted dropout:
+
+```python
+def dropout(h, p=0.5, training=True):
+    if not training or p == 0:
+        return h
+    mask = np.random.rand(*h.shape) > p
+    return h * mask / (1 - p)
+h = np.ones((1000, 1000))
+assert abs(dropout(h).mean() - 1) < 0.01 and np.array_equal(dropout(h, training=False), h)
+```
+</details>
+
+### Задача 68. Несмещённая дисперсия, которая смещена
+```py
+def sample_std(x):
+    return np.std(x)                          # для доверительного интервала по маленькой выборке
+```
+
+<details><summary>▶️ Решение</summary>
+
+`np.std` по умолчанию делит на $n$ (`ddof=0`) — оценка дисперсии смещена вниз в $\frac{n-1}{n}$ раз; при $n = 5$ это −20%. Для оценки по выборке — `ddof=1` (так считает `pandas.Series.std`, а `numpy` — нет).
+
+```python
+rng = np.random.default_rng(0)
+samples = rng.normal(0, 1, (200_000, 5))
+print(samples.var(axis=1, ddof=0).mean().round(3), samples.var(axis=1, ddof=1).mean().round(3))   # 0.8 и 1.0
+```
+</details>
+
+### Задача 69. Косинусное сходство без нормировки
+```py
+def top_k(query, docs, k=3):
+    return np.argsort(-(docs @ query))[:k]    # «ищем самые похожие по косинусу»
+```
+
+<details><summary>▶️ Решение</summary>
+
+Это скалярное произведение, а не косинус: длинные векторы (часто — длинные или «шумные» документы) выигрывают только из-за нормы.
+
+```python
+def top_k(query, docs, k=3):
+    d = docs / np.linalg.norm(docs, axis=1, keepdims=True)
+    q = query / np.linalg.norm(query)
+    return np.argsort(-(d @ q))[:k]
+docs = np.array([[1., 0.], [10., 9.], [0.7, 0.1]])
+print(np.argsort(-(docs @ np.array([1., 0.])))[:1], top_k(np.array([1., 0.]), docs, 1))   # [1] против [0]
+```
+</details>
+
+### Задача 70. Accuracy 99% на несбалансированных данных
+```py
+y_true = np.r_[np.zeros(990), np.ones(10)]
+y_pred = model.predict(X)                     # модель всегда предсказывает 0
+print((y_pred == y_true).mean())              # 0.99 — «отличная модель»
+```
+
+<details><summary>▶️ Решение</summary>
+
+Баг в выборе метрики, а не в коде: при 1% позитивов константа даёт 99% accuracy и нулевую пользу (модуль 09). Смотрите recall, precision, PR-AUC и сравнивайте с бейзлайном-константой.
+
+```python
+y_true = np.r_[np.zeros(990), np.ones(10)]; y_pred = np.zeros(1000)
+tp = np.sum((y_pred == 1) & (y_true == 1))
+recall = tp / y_true.sum()
+print((y_pred == y_true).mean(), recall)      # 0.99 и 0.0
+```
+</details>
+
+---
+
+<a id="p-fermi"></a>
+
+## 🧮 Оценка на салфетке (71–80)
+
+> На собеседованиях Senior и в реальной работе постоянно нужно за минуту прикинуть порядок величины. Точный ответ не важен — важен ход рассуждения и допущения. Решайте без калькулятора.
+
+### Задача 71. Сколько стоит обучение
+Модель 8B параметров, 15T токенов. Видеокарта даёт ~400 TFLOP/s в BF16 при утилизации 40%. Сколько GPU-часов? Сколько стоит при цене 2 USD за GPU-час?
+
+<details><summary>▶️ Решение</summary>
+
+$6ND = 6 \cdot 8 \cdot 10^9 \cdot 15 \cdot 10^{12} = 7.2 \cdot 10^{23}$ FLOP. Эффективно $1.6 \cdot 10^{14}$ FLOP/с на карту → $4.5 \cdot 10^9$ с ≈ **1.25 млн GPU-часов** ≈ **2.5 млн USD**. На 1000 картах — ~52 дня.
+</details>
+
+### Задача 72. Стоимость инференса
+Модель 70B, генерация 1 млн токенов. Сколько FLOP? Если карта выдаёт эффективно $10^{14}$ FLOP/с, сколько GPU-секунд?
+
+<details><summary>▶️ Решение</summary>
+
+На токен ≈ $2N = 1.4 \cdot 10^{11}$ FLOP; на миллион — $1.4 \cdot 10^{17}$; при $10^{14}$ FLOP/с — 1400 GPU-секунд ≈ **0.4 GPU-часа**. На практике генерация упирается не в FLOP, а в чтение весов из памяти: 140 ГБ весов на каждый шаг декодирования — поэтому батчинг запросов кратно удешевляет инференс.
+</details>
+
+### Задача 73. Память векторного индекса
+100 млн чанков, эмбеддинги 1024 float32. Сколько памяти? А с PQ по 64 байта на вектор?
+
+<details><summary>▶️ Решение</summary>
+
+$10^8 \cdot 1024 \cdot 4 = 4.1 \cdot 10^{11}$ байт ≈ **410 ГБ**. PQ: $10^8 \cdot 64 = 6.4$ ГБ — влезает в память одного сервера. Плюс граф HNSW: ~32 соседа × 4 байта × $10^8$ ≈ 13 ГБ.
+</details>
+
+### Задача 74. Сколько текста в датасете
+Сколько токенов в 10 млн веб-страниц средней длиной 5 КБ текста?
+
+<details><summary>▶️ Решение</summary>
+
+Английский текст: ~4 символа (байта) на токен → 5 КБ ≈ 1250 токенов. Итого ≈ $1.25 \cdot 10^{10}$ = **12.5B токенов**. Для русского в UTF-8 (2 байта на букву) и токенизаторе, обученном в основном на английском, токенов на тот же объём текста заметно больше.
+</details>
+
+### Задача 75. Хватит ли трафика на A/B-тест
+Конверсия 3%, хотим заметить относительный рост на 5%. Сайт — 20 000 посетителей в день. Сколько дней тест?
+
+<details><summary>▶️ Решение</summary>
+
+$\delta = 0.0015$; $n \approx 16 \cdot 0.03 \cdot 0.97 / 0.0015^2 \approx 207\,000$ на группу, 414 000 всего → **~21 день**. Маленькие эффекты на маленьких конверсиях требуют огромных выборок; варианты — метрика ближе к действию, CUPED, больше трафика.
+</details>
+
+### Задача 76. Время одной эпохи
+ImageNet 1.28 млн картинок, ResNet-50 ≈ 4 GFLOP на прямой проход. Обучение ≈ 3× прямого. Карта эффективно $10^{14}$ FLOP/с. Сколько длится эпоха?
+
+<details><summary>▶️ Решение</summary>
+
+$1.28 \cdot 10^6 \cdot 4 \cdot 10^9 \cdot 3 \approx 1.5 \cdot 10^{16}$ FLOP → 150 с на одной карте в идеале. На практике упирается в загрузку и аугментацию данных — реальные минуты на эпоху; узкое место часто CPU, а не GPU.
+</details>
+
+### Задача 77. KV-кэш и число одновременных пользователей
+Карта 80 ГБ, модель 8B в BF16 (16 ГБ). KV-кэш — 128 КБ на токен. Сколько пользователей с контекстом 8K поместится?
+
+<details><summary>▶️ Решение</summary>
+
+Свободно ~60 ГБ (оставляем запас на активации). На пользователя $8192 \cdot 128$ КБ = 1 ГБ → **~60 одновременных сессий**. Поэтому важны GQA, квантизация KV-кэша и paged attention (vLLM), чтобы не резервировать память под максимальную длину.
+</details>
+
+### Задача 78. Сколько градиентных шагов
+Предобучение 2T токенов, батч 4M токенов. Сколько шагов оптимизатора? Сколько на warmup 1%?
+
+<details><summary>▶️ Решение</summary>
+
+$2 \cdot 10^{12} / 4 \cdot 10^6 = 500\,000$ шагов; warmup — 5000 шагов.
+</details>
+
+### Задача 79. Стоимость разметки
+Нужно 50 000 размеченных пар «вопрос — релевантный документ». Асессор делает 60 пар в час, 15% меток проверяет второй асессор, ставка 10 USD/ч. Бюджет?
+
+<details><summary>▶️ Решение</summary>
+
+$50\,000 / 60 \approx 833$ часа + 15% проверки ≈ 958 часов → **≈ 9600 USD**. Альтернатива — сгенерировать вопросы LLM по документам и разметить вручную только выборку для контроля качества.
+</details>
+
+### Задача 80. Точность оценки модели
+На тестовом наборе из 2000 примеров accuracy 85%. Насколько можно доверять разнице с конкурентом, у которого 86%?
+
+<details><summary>▶️ Решение</summary>
+
+SE $= \sqrt{0.85 \cdot 0.15 / 2000} \approx 0.008$, 95%-интервал ±1.6 п.п. — разница в 1 п.п. в пределах шума. Если модели проверялись на **одном** наборе, корректнее парный тест (Макнемар, задача 26): он учитывает, на каких примерах ошибаются обе модели, и обычно чувствительнее.
+</details>
+
+---
+
+<a id="p-projects"></a>
+
+## 🛠 Мини-проекты с нуля (81–90)
+
+> Реализуйте алгоритм на чистом NumPy за 20–40 строк и сверьте с эталоном из scikit-learn. Это лучший способ убедиться, что вы понимаете математику, а не только API.
+
+### Задача 81. Дерево решений (критерий Джини)
+Реализуйте классификационное дерево глубины ≤ 4 и сравните точность с `DecisionTreeClassifier` на датасете `breast_cancer`.
+
+<details><summary>▶️ Решение</summary>
+
+```python
+import numpy as np
+from sklearn.datasets import load_breast_cancer
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier
+
+def gini(y):
+    p = np.bincount(y, minlength=2) / len(y)
+    return 1 - np.sum(p**2)
+
+def best_split(X, y):
+    best = (None, None, gini(y))                       # (признак, порог, взвешенный gini)
+    for j in range(X.shape[1]):
+        for t in np.unique(np.quantile(X[:, j], np.linspace(0.05, 0.95, 19))):
+            left = X[:, j] <= t
+            if left.all() or not left.any():
+                continue
+            g = (left.sum() * gini(y[left]) + (~left).sum() * gini(y[~left])) / len(y)
+            if g < best[2]:
+                best = (j, t, g)
+    return best
+
+def build(X, y, depth=0, max_depth=4):
+    j, t, _ = best_split(X, y)
+    if depth == max_depth or j is None or len(y) < 10:
+        return np.bincount(y, minlength=2).argmax()     # лист: мажоритарный класс
+    left = X[:, j] <= t
+    return (j, t, build(X[left], y[left], depth + 1, max_depth), build(X[~left], y[~left], depth + 1, max_depth))
+
+def predict_one(node, x):
+    while isinstance(node, tuple):
+        j, t, l, r = node
+        node = l if x[j] <= t else r
+    return node
+
+X, y = load_breast_cancer(return_X_y=True)
+Xtr, Xte, ytr, yte = train_test_split(X, y, test_size=0.3, random_state=0)
+tree = build(Xtr, ytr)
+mine = np.mean([predict_one(tree, x) == t for x, t in zip(Xte, yte)])
+ref = DecisionTreeClassifier(max_depth=4, random_state=0).fit(Xtr, ytr).score(Xte, yte)
+print(round(mine, 3), round(ref, 3))                     # ≈ 0.92 и ≈ 0.95 — почти как у sklearn
+```
+Отличие от sklearn: мы перебираем 19 квантилей вместо всех порогов — быстрее и почти без потери качества (так же устроены гистограммные бустинги LightGBM и HistGradientBoosting).
+</details>
+
+### Задача 82. Градиентный бустинг на «пеньках»
+Реализуйте бустинг для регрессии: каждый шаг — дерево глубины 1, подогнанное к остаткам (антиградиенту MSE).
+
+<details><summary>▶️ Решение</summary>
+
+```python
+def fit_stump(x, r):
+    best = (np.inf, None, None, None)
+    for t in np.quantile(x, np.linspace(0.02, 0.98, 49)):
+        l = x <= t
+        if l.all() or not l.any():
+            continue
+        pl, pr = r[l].mean(), r[~l].mean()
+        err = np.sum((r[l] - pl) ** 2) + np.sum((r[~l] - pr) ** 2)
+        if err < best[0]:
+            best = (err, t, pl, pr)
+    return best[1:]
+
+rng = np.random.default_rng(0)
+x = rng.uniform(0, 6, 400); y = np.sin(x) + 0.2 * rng.normal(size=400)
+F = np.full_like(y, y.mean()); lr = 0.1; stumps = []
+for m in range(200):
+    t, pl, pr = fit_stump(x, y - F)                     # остатки = −∇ MSE
+    F += lr * np.where(x <= t, pl, pr); stumps.append((t, pl, pr))
+print(round(np.mean((y - F) ** 2), 4))                  # ≈ шум 0.04 — модель выучила sin
+```
+Каждый «пенёк» — шаг градиентного спуска в пространстве функций; `lr` — learning rate (модуль 10).
+</details>
+
+### Задача 83. k-means++
+Реализуйте инициализацию k-means++ и покажите, что она даёт меньшую инерцию, чем случайная, в среднем по запускам.
+
+<details><summary>▶️ Решение</summary>
+
+```python
+from sklearn.datasets import make_blobs
+X, _ = make_blobs(1500, centers=8, cluster_std=0.8, random_state=1)
+
+def kmeans(X, C, iters=30):
+    for _ in range(iters):
+        lab = ((X[:, None] - C[None]) ** 2).sum(-1).argmin(1)
+        C = np.array([X[lab == j].mean(0) if (lab == j).any() else C[j] for j in range(len(C))])
+    return ((X - C[lab]) ** 2).sum()
+
+def init_pp(X, k, rng):
+    C = [X[rng.integers(len(X))]]
+    for _ in range(k - 1):
+        d2 = ((X[:, None] - np.array(C)[None]) ** 2).sum(-1).min(1)
+        C.append(X[rng.choice(len(X), p=d2 / d2.sum())])   # дальние точки — вероятнее
+    return np.array(C)
+
+rng = np.random.default_rng(0)
+rand = [kmeans(X, X[rng.choice(len(X), 8, replace=False)]) for _ in range(20)]
+pp = [kmeans(X, init_pp(X, 8, rng)) for _ in range(20)]
+print(round(np.mean(rand)), round(np.mean(pp)))         # k-means++ в среднем лучше
+```
+</details>
+
+### Задача 84. PCA на рукописных цифрах
+Сожмите изображения 8×8 (64 признака) с помощью PCA: сколько компонент объясняют 90% дисперсии? Какова ошибка реконструкции?
+
+<details><summary>▶️ Решение</summary>
+
+```python
+from sklearn.datasets import load_digits
+X = load_digits().data
+Xc = X - X.mean(0)
+U, S, Vt = np.linalg.svd(Xc, full_matrices=False)
+ratio = np.cumsum(S**2) / np.sum(S**2)
+k = np.searchsorted(ratio, 0.9) + 1
+X_rec = Xc @ Vt[:k].T @ Vt[:k] + X.mean(0)
+print(k, round(np.mean((X - X_rec) ** 2) / X.var(), 3))  # 21 компонента из 64, ошибка ≈ 5% дисперсии
+```
+</details>
+
+### Задача 85. Наивный Байес для текстов
+Реализуйте мультиномиальный наивный Байес со сглаживанием Лапласа и проверьте на игрушечном спам-датасете.
+
+<details><summary>▶️ Решение</summary>
+
+```python
+from collections import Counter
+train = [("выиграй приз бесплатно сейчас", 1), ("бесплатно деньги приз", 1), ("срочно выиграй деньги", 1),
+         ("встреча завтра в офисе", 0), ("отчёт по проекту завтра", 0), ("обсудим проект на встрече", 0)]
+vocab = sorted({w for t, _ in train for w in t.split()})
+counts = {c: Counter(w for t, y in train if y == c for w in t.split()) for c in (0, 1)}
+prior = {c: np.mean([y == c for _, y in train]) for c in (0, 1)}
+
+def log_posterior(text, c, alpha=1.0):
+    total = sum(counts[c].values())
+    return np.log(prior[c]) + sum(np.log((counts[c][w] + alpha) / (total + alpha * len(vocab)))
+                                  for w in text.split() if w in vocab)
+
+for text in ["бесплатно приз", "встреча по проекту"]:
+    print(text, "→ спам" if log_posterior(text, 1) > log_posterior(text, 0) else "→ не спам")
+```
+Сглаживание $\alpha$ — это MAP с априором Дирихле (модули 07 и 22): без него одно незнакомое классу слово обнуляет вероятность.
+</details>
+
+### Задача 86. Токенизатор BPE
+Реализуйте обучение Byte-Pair Encoding: повторять «найти самую частую пару соседних символов → склеить».
+
+<details><summary>▶️ Решение</summary>
+
+```python
+from collections import Counter
+corpus = "низкий низкий ниже новый новейший новые низко".split()
+words = Counter(tuple(w) + ("</w>",) for w in corpus)
+merges = []
+for _ in range(10):
+    pairs = Counter()
+    for w, f in words.items():
+        for a, b in zip(w, w[1:]):
+            pairs[(a, b)] += f
+    if not pairs:
+        break
+    best = max(pairs, key=pairs.get); merges.append(best)
+    new = Counter()
+    for w, f in words.items():
+        out, i = [], 0
+        while i < len(w):
+            if i < len(w) - 1 and (w[i], w[i + 1]) == best:
+                out.append(w[i] + w[i + 1]); i += 2
+            else:
+                out.append(w[i]); i += 1
+        new[tuple(out)] += f
+    words = new
+print(merges[:5])
+print(list(words)[:3])     # частые куски («низк», «нов») стали отдельными токенами
+```
+Так устроены токенизаторы GPT и LLaMA (на байтах, с десятками тысяч слияний). Отсюда и «математика токенов» из задачи 74.
+</details>
+
+### Задача 87. Биграммная языковая модель и perplexity
+Обучите модель $p(c_t \mid c_{t-1})$ по символам и сравните perplexity со случайной моделью.
+
+<details><summary>▶️ Решение</summary>
+
+```python
+text = ("градиентный спуск обновляет веса модели шаг за шагом пока функция потерь не перестанет "
+        "уменьшаться и модель не начнёт хорошо предсказывать новые данные ") * 20
+chars = sorted(set(text)); idx = {c: i for i, c in enumerate(chars)}; V = len(chars)
+split = int(len(text) * 0.9); tr, te = text[:split], text[split:]
+N = np.ones((V, V))                                         # сглаживание Лапласа
+for a, b in zip(tr, tr[1:]):
+    N[idx[a], idx[b]] += 1
+P = N / N.sum(1, keepdims=True)
+nll = -np.mean([np.log(P[idx[a], idx[b]]) for a, b in zip(te, te[1:])])
+print(V, round(np.exp(nll), 2))                             # perplexity ≈ 6 против 29 у случайной модели
+```
+Perplexity — «из скольких символов в среднем выбирает модель» (модуль 08). Нейросетевые LM — это та же идея с длинным контекстом вместо одного символа.
+</details>
+
+### Задача 88. MLP на цифрах
+Обучите двухслойную сеть на `load_digits` на NumPy (ReLU, softmax + CE, мини-батчи) и добейтесь точности > 95% на тесте.
+
+<details><summary>▶️ Решение</summary>
+
+```python
+from sklearn.datasets import load_digits
+from sklearn.model_selection import train_test_split
+X, y = load_digits(return_X_y=True); X = X / 16.0
+Xtr, Xte, ytr, yte = train_test_split(X, y, test_size=0.25, random_state=0)
+rng = np.random.default_rng(0)
+W1 = rng.normal(0, np.sqrt(2 / 64), (64, 128)); b1 = np.zeros(128)
+W2 = rng.normal(0, np.sqrt(1 / 128), (128, 10)); b2 = np.zeros(10)
+for epoch in range(30):
+    batches = rng.permutation(len(Xtr))[: len(Xtr) // 32 * 32].reshape(-1, 32)   # перемешанные батчи по 32
+    for i in batches:
+        xb, yb = Xtr[i], ytr[i]
+        a1 = xb @ W1 + b1; h = np.maximum(0, a1); z = h @ W2 + b2
+        p = np.exp(z - z.max(1, keepdims=True)); p /= p.sum(1, keepdims=True)
+        dz = p.copy(); dz[np.arange(32), yb] -= 1; dz /= 32
+        dW2 = h.T @ dz; db2 = dz.sum(0); dh = dz @ W2.T * (a1 > 0); dW1 = xb.T @ dh; db1 = dh.sum(0)
+        for P_, G in [(W1, dW1), (b1, db1), (W2, dW2), (b2, db2)]:
+            P_ -= 0.1 * G
+pred = (np.maximum(0, Xte @ W1 + b1) @ W2 + b2).argmax(1)
+print(round((pred == yte).mean(), 3))                       # ≈ 0.97
+```
+</details>
+
+### Задача 89. Логистическая регрессия с L1 через проксимальный шаг
+Реализуйте ISTA (градиентный шаг + soft thresholding) и покажите, что часть весов становится ровно нулём.
+
+<details><summary>▶️ Решение</summary>
+
+```python
+rng = np.random.default_rng(0)
+X = rng.normal(size=(500, 20)); w_true = np.zeros(20); w_true[:3] = [2, -3, 1.5]
+y = (rng.random(500) < 1 / (1 + np.exp(-X @ w_true))).astype(float)
+w = np.zeros(20); lr, lam = 0.5, 0.05
+for _ in range(500):
+    g = X.T @ (1 / (1 + np.exp(-X @ w)) - y) / len(y)
+    w = w - lr * g
+    w = np.sign(w) * np.maximum(np.abs(w) - lr * lam, 0)   # проксимальный оператор L1
+print(np.round(w, 2)); print("нулевых весов:", np.sum(w == 0))
+```
+Обычный SGD с L1 колеблется около нуля, а проксимальный шаг даёт **точные нули** — это и есть отбор признаков Lasso (модуль 05, задача 11).
+</details>
+
+### Задача 90. Сравнение оптимизаторов на логистической регрессии
+Сравните SGD, Momentum и Adam по лоссу после 200 шагов на плохо обусловленных признаках.
+
+<details><summary>▶️ Решение</summary>
+
+```python
+rng = np.random.default_rng(1)
+X = rng.normal(size=(1000, 10)) * np.logspace(0, 2, 10)       # масштабы признаков от 1 до 100
+y = (X[:, 0] + 0.01 * X[:, -1] > 0).astype(float)
+loss = lambda w: np.mean(np.logaddexp(0, X @ w) - y * (X @ w))
+grad = lambda w: X.T @ (1 / (1 + np.exp(-np.clip(X @ w, -30, 30))) - y) / len(y)
+res = {}
+for name in ["SGD", "Momentum", "Adam"]:
+    w = np.zeros(10); m = np.zeros(10); v = np.zeros(10)
+    for t in range(1, 201):
+        g = grad(w)
+        if name == "SGD":
+            w -= 1e-4 * g
+        elif name == "Momentum":
+            m = 0.9 * m + g; w -= 1e-4 * m
+        else:
+            m = 0.9 * m + 0.1 * g; v = 0.999 * v + 0.001 * g**2
+            w -= 0.05 * (m / (1 - 0.9**t)) / (np.sqrt(v / (1 - 0.999**t)) + 1e-8)
+    res[name] = round(loss(w), 4)
+print(res)        # Adam заметно ниже: он выравнивает масштабы признаков
+```
+SGD и Momentum вынуждены брать крошечный шаг из-за признака с масштабом 100 и почти не двигаются по остальным. Нормировка признаков (задача 50) решила бы это и для них.
+</details>
+
+---
+
+<a id="p-interview"></a>
+
+## 🎤 Как на собеседовании (91–100)
+
+> Задачи «на доске»: интервьюер ждёт рассуждение вслух. Попробуйте решить за 5–10 минут без кода, затем проверьте моделированием.
+
+### Задача 91. Математическое ожидание максимума
+$X, Y \sim U(0, 1)$ независимы. Найдите $\mathbb{E}[\max(X, Y)]$.
+
+<details><summary>▶️ Решение</summary>
+
+$P(\max \le t) = t^2$ ⇒ плотность $2t$ ⇒ $\mathbb{E} = \int_0^1 t \cdot 2t\,dt = 2/3$. Обобщение: максимум $n$ равномерных — $\frac{n}{n+1}$.
+
+```python
+print(np.random.rand(1_000_000, 2).max(1).mean())   # ≈ 0.667
+```
+</details>
+
+### Задача 92. Монти Холл
+Три двери, за одной приз. Вы выбрали дверь, ведущий открыл пустую из оставшихся и предложил сменить выбор. Менять?
+
+<details><summary>▶️ Решение</summary>
+
+Менять: вероятность выигрыша 2/3 против 1/3. Изначальный выбор верен с вероятностью 1/3, и ведущий эту вероятность не меняет; оставшиеся 2/3 «переходят» на единственную закрытую дверь.
+
+```python
+rng = np.random.default_rng(0); n = 100_000
+prize = rng.integers(0, 3, n); pick = rng.integers(0, 3, n)
+print((prize == pick).mean(), (prize != pick).mean())   # остаться ≈ 0.33, сменить ≈ 0.67
+```
+</details>
+
+### Задача 93. Коллекционер купонов
+Сколько в среднем нужно случайных выборок с возвращением из $n$ классов, чтобы увидеть каждый хотя бы раз? Сколько для $n = 100$?
+
+<details><summary>▶️ Решение</summary>
+
+Когда уже собрано $k$ классов, новый выпадает с вероятностью $\frac{n-k}{n}$ — ждём в среднем $\frac{n}{n-k}$ шагов. Сумма: $n\sum_{k=1}^{n}\frac{1}{k} = nH_n \approx n\ln n$. Для 100 — ≈ 519. Применение: сколько примеров нужно, чтобы в выборке встретился каждый из 100 редких классов.
+</details>
+
+### Задача 94. Докажите, что логистический лосс выпуклый
+Покажите, что $\ell(z) = \log(1 + e^{-z})$ выпукла и что поэтому логистическая регрессия имеет единственный минимум (при регуляризации).
+
+<details><summary>▶️ Решение</summary>
+
+$\ell'(z) = -\sigma(-z)$, $\ell''(z) = \sigma(z)\sigma(-z) > 0$ — выпукла. Композиция выпуклой функции с линейной $z = y\,\mathbf{w}^\top\mathbf{x}$ выпукла, сумма выпуклых выпукла; гессиан $X^\top D X$ с $D = \operatorname{diag}(\sigma(1-\sigma)) \succeq 0$. Добавка $\lambda\lVert\mathbf{w}\rVert^2$ делает функцию строго выпуклой ⇒ минимум единственный. Без регуляризации на линейно разделимых данных минимума нет: веса уходят в бесконечность.
+</details>
+
+### Задача 95. Градиент нормировки вектора
+Найдите якобиан $f(\mathbf{x}) = \mathbf{x}/\lVert\mathbf{x}\rVert$ (встречается в косинусном лоссе и QK-norm).
+
+<details><summary>▶️ Решение</summary>
+
+```math
+\frac{\partial f}{\partial \mathbf{x}} = \frac{1}{\lVert\mathbf{x}\rVert}\left(I - \frac{\mathbf{x}\mathbf{x}^\top}{\lVert\mathbf{x}\rVert^2}\right)
+```
+Это проекция на плоскость, ортогональную $\mathbf{x}$: изменение вдоль самого $\mathbf{x}$ не меняет направления. Численная проверка:
+
+```python
+x = np.random.randn(5); n = np.linalg.norm(x)
+J = (np.eye(5) - np.outer(x, x) / n**2) / n
+h = 1e-6; J_num = np.array([((x + h * e) / np.linalg.norm(x + h * e) - (x - h * e) / np.linalg.norm(x - h * e)) / (2 * h) for e in np.eye(5)]).T
+print(np.allclose(J, J_num, atol=1e-6))
+```
+</details>
+
+### Задача 96. Случайное блуждание
+Частица на прямой делает 100 шагов ±1 с равной вероятностью. Каково ожидаемое расстояние от старта (квадратичное)? Вероятность вернуться в 0 ровно на 100-м шаге?
+
+<details><summary>▶️ Решение</summary>
+
+$\mathbb{E}[S^2] = n = 100$ ⇒ среднеквадратичное расстояние $\sqrt{n} = 10$ (дисперсии независимых шагов складываются). $P(S_{100} = 0) = \binom{100}{50}/2^{100} \approx 0.08 \approx \sqrt{2/(\pi n)}$. Связь с ML: шум SGD накапливается как $\sqrt{t}$, а не как $t$.
+</details>
+
+### Задача 97. Ridge через байес
+Покажите, что решение Ridge совпадает со средним апостериорного распределения весов при гауссовском шуме и гауссовском априоре.
+
+<details><summary>▶️ Решение</summary>
+
+$p(\mathbf{w} \mid D) \propto \exp\bigl(-\frac{1}{2\sigma^2}\lVert X\mathbf{w} - \mathbf{y}\rVert^2 - \frac{1}{2\tau^2}\lVert\mathbf{w}\rVert^2\bigr)$ — экспонента от квадратичной формы ⇒ гауссиана; её мода = среднее = минимум показателя: $(X^\top X + \lambda I)\mathbf{w} = X^\top\mathbf{y}$, $\lambda = \sigma^2/\tau^2$. Байесовский подход дополнительно даёт ковариацию $\sigma^2(X^\top X + \lambda I)^{-1}$ — неопределённость весов (модуль 22).
+</details>
+
+### Задача 98. Сколько раз подбросить монету
+Как проверить, честная ли монета, с точностью ±1 п.п. при 95% уверенности?
+
+<details><summary>▶️ Решение</summary>
+
+$1.96\sqrt{0.25/n} \le 0.01 \Rightarrow n \ge 9604$. Ответ «около 10 000 бросков» и рассуждение через $\sigma/\sqrt{n}$ — то, что ждут.
+</details>
+
+### Задача 99. Почему $\sqrt{d}$, а не $d$
+В attention делят скоры на $\sqrt{d}$. Что сломается, если делить на $d$?
+
+<details><summary>▶️ Решение</summary>
+
+Дисперсия $\mathbf{q}^\top\mathbf{k}$ равна $d$ (модуль 11); после деления на $\sqrt d$ — 1, на $d$ — $1/d$. При $d = 128$ скоры ≈ ±0.09, softmax почти равномерный: attention превращается в простое усреднение, модель с трудом фокусируется на нужных токенах, а градиенты по $\mathbf{q}, \mathbf{k}$ становятся очень малыми.
+
+```python
+d = 128; q, k = np.random.randn(d, 1000), np.random.randn(d, 1000)
+s = (q * k).sum(0)
+print(round(s.std(), 1), round((s / np.sqrt(d)).std(), 2), round((s / d).std(), 3))   # ≈ 11, 1.0, 0.09
+```
+</details>
+
+### Задача 100. Где ошибается рассуждение
+Кандидат говорит: «Наша модель увеличила средний чек на 5%, потому что в группе с моделью средний чек на 5% выше, чем в группе без неё. Группы — пользователи, которые сами включили рекомендации и которые не включили». Что не так и как исправить?
+
+<details><summary>▶️ Решение</summary>
+
+Самоотбор: включают рекомендации более вовлечённые пользователи — конфаундер (модуль 19). Нужно: рандомизированный A/B (включение по случайному флагу), или хотя бы propensity score / DiD с проверкой допущений; оценивать эффект с доверительным интервалом и следить за долгосрочными метриками (возвраты, удержание), а не только средним чеком.
+</details>
+
+---
+
 ### ✅ Чек-лист готовности
 
-- [ ] Решил все 60 задач практикума и задачи «Практика модуля»
+- [ ] Решил все 100 задач практикума и задачи «Практика модуля»
+- [ ] Нашёл все 10 багов в задачах 61–70 до того, как открыл решения
+- [ ] Реализовал с нуля хотя бы 5 мини-проектов из 81–90 и сверил с sklearn
+- [ ] Прошёл [рабочую тетрадь с автопроверкой](exercises/README.md) — все тесты зелёные
 - [ ] Могу без подсказок вывести градиенты логистической регрессии и softmax + CE
 - [ ] Могу написать backprop двухслойной сети на NumPy за 15 минут
 - [ ] Могу реализовать attention и объяснить каждую размерность
