@@ -18,7 +18,7 @@ jobs:
         run: |
           pip install numpy scipy matplotlib scikit-learn
           pip install torch --index-url https://download.pytorch.org/whl/cpu
-      - name: Весь код из README.md и BASICS.md запускается
+      - name: Весь код курса (modules/, PRACTICE.md, BASICS.md…) запускается
         run: python tests/check_snippets.py
       - name: Эталонные решения рабочей тетради проходят автопроверки
         run: python tests/test_exercises.py
