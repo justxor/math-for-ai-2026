@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Проверяет, что весь Python-код курса запускается.
 
-Код из README.md и BASICS.md группируется по разделам (якорям <a id="...">) и выполняется
+Код из BASICS.md, README.md, modules/*.md, PRACTICE.md и CHEATSHEET.md группируется по разделам (якорям <a id="...">) и выполняется
 по порядку в отдельном процессе для каждого раздела — так же, как читатель запускал бы его подряд.
 Блоки с PyTorch пропускаются, если torch не установлен.
 
@@ -32,7 +32,9 @@ def sections(path):
 
 def main():
     failed, total, skipped = [], 0, 0
-    for name in ["BASICS.md", "README.md"]:
+    files = ["BASICS.md", "README.md"] + sorted(str(p.relative_to(ROOT)) for p in (ROOT / "modules").glob("*.md")) \
+        + ["PRACTICE.md", "CHEATSHEET.md"]
+    for name in files:
         for anchor, body in sections(ROOT / name):
             blocks = re.findall(r"```python\n(.*?)```", body, re.S)
             if not HAS_TORCH:
