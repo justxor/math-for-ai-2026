@@ -14,14 +14,14 @@ check_softmax(softmax)            ← ✅ все тесты пройдены   �
 
 | № | Упражнение | Модуль |
 |---|-----------|--------|
-| 1–3 | устойчивые sigmoid, softmax, кросс-энтропия | [01](../README.md#m01), [09](../README.md#m09), [13](../README.md#m13) |
-| 4–6 | косинусная матрица, PCA через SVD, нормальное уравнение | [02](../README.md#m02), [10](../README.md#m10) |
-| 7–9 | градиентный спуск, численный градиент, шаг Adam | [03](../README.md#m03), [05](../README.md#m05) |
-| 10–11 | формула Байеса, бутстрап-интервал | [06](../README.md#m06), [07](../README.md#m07) |
-| 12–13 | энтропия, KL-дивергенция | [08](../README.md#m08) |
-| 14–15 | precision/recall/F1, ROC-AUC | [09](../README.md#m09) |
-| 16–18 | шаг k-means, attention с маской, размер свёртки | [10](../README.md#m10), [11](../README.md#m11) |
-| 19–20 | NDCG@k, квантиль conformal prediction | [21](../README.md#m21), [22](../README.md#m22) |
+| 1–3 | устойчивые sigmoid, softmax, кросс-энтропия | [01](../modules/01_notation.md#m01), [09](../modules/09_losses_metrics.md#m09), [13](../modules/13_numerics.md#m13) |
+| 4–6 | косинусная матрица, PCA через SVD, нормальное уравнение | [02](../modules/02_linear_algebra.md#m02), [10](../modules/10_classic_ml.md#m10) |
+| 7–9 | градиентный спуск, численный градиент, шаг Adam | [03](../modules/03_calculus.md#m03), [05](../modules/05_optimization.md#m05) |
+| 10–11 | формула Байеса, бутстрап-интервал | [06](../modules/06_probability.md#m06), [07](../modules/07_statistics.md#m07) |
+| 12–13 | энтропия, KL-дивергенция | [08](../modules/08_information_theory.md#m08) |
+| 14–15 | precision/recall/F1, ROC-AUC | [09](../modules/09_losses_metrics.md#m09) |
+| 16–18 | шаг k-means, attention с маской, размер свёртки | [10](../modules/10_classic_ml.md#m10), [11](../modules/11_deep_learning.md#m11) |
+| 19–20 | NDCG@k, квантиль conformal prediction | [21](../modules/21_recommender_systems.md#m21), [22](../modules/22_bayes_uncertainty.md#m22) |
 
 ## Как работать
 
