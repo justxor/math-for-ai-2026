@@ -73,7 +73,7 @@ P(\text{б} \mid +) = \frac{0.99 \cdot 0.01}{0.99 \cdot 0.01 + 0.05 \cdot 0.99} 
 | Нормальное | $\mu, \sigma^2$ | $\mu$ | $\sigma^2$ | шум, VAE, диффузия, инициализация |
 | Экспоненциальное | $\lambda$ | $1/\lambda$ | $1/\lambda^2$ | время между событиями |
 | Бета | $\alpha, \beta$ | $\frac{\alpha}{\alpha+\beta}$ | — | априор для вероятности, Thompson sampling |
-| Дирихле | $\boldsymbol{\alpha}$ | $\alpha_i / \sum\alpha$ | — | априор над категориальным, LDA |
+| Дирихле | $\mathbf{\alpha}$ | $\alpha_i / \sum\alpha$ | — | априор над категориальным, LDA |
 | Лапласа | $\mu, b$ | $\mu$ | $2b^2$ | MAE ↔ L1 |
 
 ### 🗺️ Схема: как распределения связаны друг с другом
@@ -102,13 +102,13 @@ flowchart LR
 ### Многомерное нормальное
 
 ```math
-\mathcal{N}(\mathbf{x} \mid \boldsymbol{\mu}, \Sigma) = \frac{1}{(2\pi)^{d/2} |\Sigma|^{1/2}} \exp\left(-\tfrac{1}{2} (\mathbf{x}-\boldsymbol{\mu})^\top \Sigma^{-1} (\mathbf{x}-\boldsymbol{\mu})\right)
+\mathcal{N}(\mathbf{x} \mid \mathbf{\mu}, \Sigma) = \frac{1}{(2\pi)^{d/2} |\Sigma|^{1/2}} \exp\left(-\tfrac{1}{2} (\mathbf{x}-\mathbf{\mu})^\top \Sigma^{-1} (\mathbf{x}-\mathbf{\mu})\right)
 ```
 
 ![mvn](../images/mvn.png)
 
 - Линии уровня — эллипсы; оси эллипса — собственные векторы $\Sigma$, полуоси ∝ $\sqrt{\lambda_i}$ (связь с PCA).
-- **Репараметризация:** $\mathbf{x} = \boldsymbol{\mu} + L\boldsymbol{\varepsilon}$, $\boldsymbol{\varepsilon} \sim \mathcal{N}(0, I)$, $LL^\top = \Sigma$ (Холецкий). Это «reparameterization trick» в VAE — случайность вынесена в $\boldsymbol{\varepsilon}$, и градиент проходит через $\boldsymbol{\mu}, L$.
+- **Репараметризация:** $\mathbf{x} = \mathbf{\mu} + L\mathbf{\varepsilon}$, $\mathbf{\varepsilon} \sim \mathcal{N}(0, I)$, $LL^\top = \Sigma$ (Холецкий). Это «reparameterization trick» в VAE — случайность вынесена в $\mathbf{\varepsilon}$, и градиент проходит через $\mathbf{\mu}, L$.
 - Сумма независимых нормальных — нормальная; маргинальные и условные распределения — нормальные (гауссовские процессы, фильтр Калмана).
 
 ## Закон больших чисел и ЦПТ
@@ -133,7 +133,7 @@ flowchart LR
 | Gumbel-max | $\arg\max_i (z_i + g_i)$, $g_i \sim \text{Gumbel}$ ~ категориальное(softmax z) | Gumbel-softmax, дифференцируемый дискретный выбор |
 | Importance sampling | $\mathbb{E}_p[f] = \mathbb{E}_q[f\,p/q]$ | off-policy RL, PPO-отношение $\pi/\pi_{\text{old}}$ |
 | MCMC (Metropolis, HMC) | цепь Маркова со стационарным $p$ | байесовский вывод |
-| Langevin dynamics | $\mathbf{x} \leftarrow \mathbf{x} + \frac{\eta}{2}\nabla\log p(\mathbf{x}) + \sqrt{\eta}\,\boldsymbol{\varepsilon}$ | score-based диффузия |
+| Langevin dynamics | $\mathbf{x} \leftarrow \mathbf{x} + \frac{\eta}{2}\nabla\log p(\mathbf{x}) + \sqrt{\eta}\,\mathbf{\varepsilon}$ | score-based диффузия |
 
 ## 🎯 На собеседовании
 

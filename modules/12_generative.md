@@ -88,7 +88,7 @@ flowchart LR
 **Прямой процесс** — постепенно добавляем гауссовский шум, в закрытой форме для любого $t$:
 
 ```math
-q(\mathbf{x}_t \mid \mathbf{x}_0) = \mathcal{N}\bigl(\sqrt{\bar\alpha_t}\,\mathbf{x}_0,\ (1 - \bar\alpha_t) I\bigr) \quad\Longleftrightarrow\quad \mathbf{x}_t = \sqrt{\bar\alpha_t}\,\mathbf{x}_0 + \sqrt{1 - \bar\alpha_t}\,\boldsymbol\varepsilon, \qquad \bar\alpha_t = \prod_{s=1}^{t}(1 - \beta_s)
+q(\mathbf{x}_t \mid \mathbf{x}_0) = \mathcal{N}\bigl(\sqrt{\bar\alpha_t}\,\mathbf{x}_0,\ (1 - \bar\alpha_t) I\bigr) \quad\Longleftrightarrow\quad \mathbf{x}_t = \sqrt{\bar\alpha_t}\,\mathbf{x}_0 + \sqrt{1 - \bar\alpha_t}\,\mathbf{\varepsilon}, \qquad \bar\alpha_t = \prod_{s=1}^{t}(1 - \beta_s)
 ```
 
 ![diffusion](../images/diffusion.png)
@@ -104,15 +104,15 @@ flowchart LR
 **Обучение (DDPM)** — сеть угадывает шум, лосс — обычный MSE:
 
 ```math
-\mathcal{L} = \mathbb{E}_{t,\, \mathbf{x}_0,\, \boldsymbol\varepsilon}\bigl\lVert \boldsymbol\varepsilon - \boldsymbol\varepsilon_\theta(\mathbf{x}_t, t) \bigr\rVert^2
+\mathcal{L} = \mathbb{E}_{t,\, \mathbf{x}_0,\, \mathbf{\varepsilon}}\bigl\lVert \mathbf{\varepsilon} - \mathbf{\varepsilon}_\theta(\mathbf{x}_t, t) \bigr\rVert^2
 ```
 
-**Связь со score:** предсказанный шум пропорционален градиенту лог-плотности — $\nabla_{\mathbf{x}_t}\log q(\mathbf{x}_t) \approx -\boldsymbol\varepsilon_\theta(\mathbf{x}_t, t)/\sqrt{1 - \bar\alpha_t}$. Генерация — это спуск по «оценке градиента плотности» с шумом (Langevin dynamics / обратное СДУ).
+**Связь со score:** предсказанный шум пропорционален градиенту лог-плотности — $\nabla_{\mathbf{x}_t}\log q(\mathbf{x}_t) \approx -\mathbf{\varepsilon}_\theta(\mathbf{x}_t, t)/\sqrt{1 - \bar\alpha_t}$. Генерация — это спуск по «оценке градиента плотности» с шумом (Langevin dynamics / обратное СДУ).
 
 **Ключевые улучшения:**
 - **DDIM** — детерминированное сэмплирование за 20–50 шагов вместо 1000.
-- **Classifier-free guidance:** $\tilde{\boldsymbol\varepsilon} = \boldsymbol\varepsilon_\theta(\mathbf{x}_t, \varnothing) + w\,\bigl(\boldsymbol\varepsilon_\theta(\mathbf{x}_t, c) - \boldsymbol\varepsilon_\theta(\mathbf{x}_t, \varnothing)\bigr)$, $w$ ≈ 3–8: сильнее следует промпту, ценой разнообразия.
-- **Flow matching / rectified flow** (Stable Diffusion 3, FLUX): учим скоростное поле $\mathbf{v}_\theta$ по прямой между шумом и данными, $\mathbf{x}_t = (1-t)\mathbf{x}_0 + t\boldsymbol\varepsilon$, лосс $\lVert \mathbf{v}_\theta(\mathbf{x}_t, t) - (\boldsymbol\varepsilon - \mathbf{x}_0)\rVert^2$. Прямые траектории → меньше шагов.
+- **Classifier-free guidance:** $\tilde{\mathbf{\varepsilon}} = \mathbf{\varepsilon}_\theta(\mathbf{x}_t, \varnothing) + w\,\bigl(\mathbf{\varepsilon}_\theta(\mathbf{x}_t, c) - \mathbf{\varepsilon}_\theta(\mathbf{x}_t, \varnothing)\bigr)$, $w$ ≈ 3–8: сильнее следует промпту, ценой разнообразия.
+- **Flow matching / rectified flow** (Stable Diffusion 3, FLUX): учим скоростное поле $\mathbf{v}_\theta$ по прямой между шумом и данными, $\mathbf{x}_t = (1-t)\mathbf{x}_0 + t\mathbf{\varepsilon}$, лосс $\lVert \mathbf{v}_\theta(\mathbf{x}_t, t) - (\mathbf{\varepsilon} - \mathbf{x}_0)\rVert^2$. Прямые траектории → меньше шагов.
 - **Дистилляция** (consistency models, adversarial distillation) — генерация за 1–4 шага.
 
 ## Выравнивание LLM: RLHF и DPO

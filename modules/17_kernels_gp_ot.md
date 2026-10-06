@@ -25,7 +25,7 @@
 
 **Теорема о представителе (representer theorem):** решение регуляризованной задачи в RKHS имеет вид $f(\mathbf{x}) = \sum_i \alpha_i k(\mathbf{x}_i, \mathbf{x})$ — оптимизация по бесконечномерному пространству сводится к $N$ коэффициентам.
 
-**Kernel ridge regression:** $\boldsymbol\alpha = (K + \lambda I)^{-1}\mathbf{y}$. Сложность $O(N^3)$ — поэтому для больших данных используют **случайные признаки Фурье** (Rahimi & Recht): $\varphi(\mathbf{x}) = \sqrt{2/D}\cos(W\mathbf{x} + \mathbf{b})$, $W \sim \mathcal{N}(0, \ell^{-2}I)$ — явная аппроксимация RBF-ядра.
+**Kernel ridge regression:** $\mathbf{\alpha} = (K + \lambda I)^{-1}\mathbf{y}$. Сложность $O(N^3)$ — поэтому для больших данных используют **случайные признаки Фурье** (Rahimi & Recht): $\varphi(\mathbf{x}) = \sqrt{2/D}\cos(W\mathbf{x} + \mathbf{b})$, $W \sim \mathcal{N}(0, \ell^{-2}I)$ — явная аппроксимация RBF-ядра.
 
 **Связи с глубоким обучением:**
 - Attention $\mathrm{softmax}(\mathbf{q}^\top\mathbf{k})$ — это ядерное сглаживание с ядром $\exp(\mathbf{q}^\top\mathbf{k})$; линейные трансформеры (Performer) аппроксимируют его случайными признаками и получают $O(T)$.

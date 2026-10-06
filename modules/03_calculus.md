@@ -63,11 +63,11 @@ f'(x) = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h}
 **Ряд Тейлора** второго порядка — как выглядит лосс вблизи точки:
 
 ```math
-f(\mathbf{x} + \boldsymbol{\delta}) \approx f(\mathbf{x}) + \nabla f(\mathbf{x})^\top \boldsymbol{\delta} + \tfrac{1}{2}\, \boldsymbol{\delta}^\top H(\mathbf{x})\, \boldsymbol{\delta}
+f(\mathbf{x} + \mathbf{\delta}) \approx f(\mathbf{x}) + \nabla f(\mathbf{x})^\top \mathbf{\delta} + \tfrac{1}{2}\, \mathbf{\delta}^\top H(\mathbf{x})\, \mathbf{\delta}
 ```
 
 - Собственные числа гессиана — кривизна по главным направлениям. Отношение $\lambda_{\max}/\lambda_{\min}$ (обусловленность) определяет, насколько трудно оптимизировать.
-- Метод Ньютона: $\boldsymbol{\delta} = -H^{-1}\nabla f$. Для сети с $10^9$ параметров гессиан — $10^{18}$ чисел, поэтому в DL используют **первый порядок** (SGD, Adam) или дешёвые приближения кривизны (Adam — диагональ, Shampoo/SOAP — блочные).
+- Метод Ньютона: $\mathbf{\delta} = -H^{-1}\nabla f$. Для сети с $10^9$ параметров гессиан — $10^{18}$ чисел, поэтому в DL используют **первый порядок** (SGD, Adam) или дешёвые приближения кривизны (Adam — диагональ, Shampoo/SOAP — блочные).
 
 ### Ряд Тейлора — картинкой
 

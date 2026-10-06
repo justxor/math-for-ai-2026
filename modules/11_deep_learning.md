@@ -47,7 +47,7 @@
 \text{RMSNorm:}\ \ \hat{\mathbf{x}} = \frac{\mathbf{x}}{\sqrt{\frac{1}{d}\sum_i x_i^2 + \epsilon}}
 ```
 
-затем $\boldsymbol{\gamma} \odot \hat{\mathbf{x}} + \boldsymbol{\beta}$ (обучаемые масштаб и сдвиг).
+затем $\mathbf{\gamma} \odot \hat{\mathbf{x}} + \mathbf{\beta}$ (обучаемые масштаб и сдвиг).
 
 | | BatchNorm | LayerNorm / RMSNorm |
 |---|---|---|
