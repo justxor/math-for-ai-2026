@@ -20,9 +20,12 @@ jobs:
           pip install torch --index-url https://download.pytorch.org/whl/cpu
       - name: Весь код из README.md и BASICS.md запускается
         run: python tests/check_snippets.py
+      - name: Эталонные решения рабочей тетради проходят автопроверки
+        run: python tests/test_exercises.py
       - name: Иллюстрации генерируются
         run: MPLBACKEND=Agg python scripts/make_figures.py
       - name: Ноутбуки соответствуют тексту курса
         run: |
           python scripts/build_notebooks.py
-          git diff --exit-code notebooks/ || (echo "Запустите python scripts/build_notebooks.py и закоммитьте notebooks/" && exit 1)
+          python scripts/build_workbook.py
+          git diff --exit-code notebooks/ exercises/workbook.ipynb || (echo "Запустите scripts/build_notebooks.py и scripts/build_workbook.py и закоммитьте результат" && exit 1)
