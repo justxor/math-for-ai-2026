@@ -19,7 +19,7 @@ MODULES = {
     "m12": "12_generative", "m13": "13_numerics", "m14": "14_reinforcement_learning", "m15": "15_graphs_gnn",
     "m16": "16_learning_theory", "m17": "17_kernels_gp_ot", "m18": "18_time_series", "m19": "19_causal_inference",
     "m20": "20_retrieval_rag", "m21": "21_recommender_systems", "m22": "22_bayes_uncertainty", "m23": "23_fourier_signals",
-    "practice": "practicum_60_tasks",
+    "practice": "practicum",
 }
 
 
